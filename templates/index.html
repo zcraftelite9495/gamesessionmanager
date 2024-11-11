@@ -1,0 +1,21 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home - Game Session Manager{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="doubleheading1">Z's Game Session Manager</h1>
+        <h2 class="nomargin">Web Interface {{ version }}</h2>
+        <h5 class="doubleheading2" style="color: gray">Powered by Google Sheets API</h5>
+        <nav>
+            <a class="button" href="/add_entry">Add Log Entry</a>
+            <a class="button" href="/check_game_info">Check Game Info</a>
+            <a class="button" href="/list_games">See All Games</a>
+        </nav>
+        </br>
+        <nav>
+            <a class="view_sheet_button" href="https://docs.google.com/spreadsheets/d/1cYQ8B-lnzHLaO32mFZJTweRy8vqjr0Wm2kmcHEcFP8A/edit?gid=329820141#gid=329820141">View Google Sheet</a>
+        </nav>
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Game List - Game Session Manager{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>List of Games</h1>
+        {% for game in games_info %}
+        <div class="game-info-card">
+            <div class="game-info">
+                <img src="{{ game.cover_url }}" alt="{{ game.game_name }} Cover" class="game-cover">
+                <div class="info-details">
+                    <div class="info-item">
+                        <strong>Game Name:</strong>
+                        <span>{{ game.game_name }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Developer:</strong>
+                        <span>{{ game.developer }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Total Playtime:</strong>
+                        <span>{{ game.total_playtime }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Platforms:</strong>
+                        <span>{{ game.platforms }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Price Paid:</strong>
+                        <span>{{ game.total_price_paid }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Value Played:</strong>
+                        <span>{{ game.total_value_played }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Last Played:</strong>
+                        <span>{{ game.last_played }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Average Session Length:</strong>
+                        <span>{{ game.average_session_length }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Session Count:</strong>
+                        <span>{{ game.session_count }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <p>No games found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+<!-- templates/add_entry.html -->
+{% extends 'base.html' %}
+
+{% block title %}Add a Log Entry - Game Session Manager{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Add a Log Entry</h1>
+        <form method="post">
+            <label for="game_name">Game Name:</label>
+            <input type="text" name="game_name" id="game_name" required>
+            
+            <label for="game_platform">Game Platform:</label>
+            <input type="text" name="game_platform" id="game_platform" required>
+            
+            <label for="custom_date">Custom Date (MM/DD/YYYY):</label>
+            <input type="text" name="custom_date" id="custom_date">
+            
+            <label for="start_time">Start Time (hh:mm:ss AM/PM):</label>
+            <input type="text" name="start_time" id="start_time" required>
+            
+            <label for="end_time">End Time (hh:mm:ss AM/PM):</label>
+            <input type="text" name="end_time" id="end_time" required>
+            
+            <input class="submit-button" type="submit" value="Add Entry">
+        </form>
+    </div>
+{% endblock %}

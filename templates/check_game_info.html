@@ -1,0 +1,25 @@
+<!-- templates/check_game_info.html -->
+{% extends 'base.html' %}
+
+{% block title %}Check Game Info - Game Session Manager{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Check Game Info</h1>
+        <form method="post">
+            <label for="game_name">Game Name:</label>
+            <input type="text" name="game_name" id="game_name" required>
+            <input class="submit-button" type="submit" value="Check Info">
+        </form>
+        {% if game_info %}
+            <h2>Game Information</h2>
+            <p>Game Name: {{ game_info.game_name }}</p>
+            <p>Developer: {{ game_info.developer }}</p>
+            <p>Total Playtime: {{ game_info.total_playtime }}</p>
+            <p>Platforms: {{ game_info.platforms }}</p>
+            <p>Last Played: {{ game_info.last_played }}</p>
+            <p>Average Session Length: {{ game_info.average_session_length }}</p>
+            <p>Session Count: {{ game_info.session_count }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

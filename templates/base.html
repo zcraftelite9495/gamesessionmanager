@@ -1,0 +1,33 @@
+<!-- templates/base.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Game Session Manager{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="titlebar">
+        <h1 class="site-title">Z's Game Session Manager</h1>
+        <nav class="navigation">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/add_entry">Add Log Entry</a></li>
+                <li><a href="/check_game_info">Check Game Info</a></li>
+                <li><a href="/list_games">See All Games</a></li>
+            </ul>
+        </nav>
+    </div>
+
+{% block content %}
+<!-- Page-specific content will go here -->
+{% endblock %}
+
+    <div class="endofcontent"></div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Zena Comerford/ZcraftElite</p>
+    </footer>
+</body>
+</html>
