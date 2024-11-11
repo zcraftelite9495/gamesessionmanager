@@ -259,6 +259,9 @@ def get_credentials():
 creds = get_credentials()
 client = gspread.authorize(creds)
 
+executable_dir = Path(__file__).parent
+os.chdir(executable_dir)
+
 # Open the Google Sheets by ID
 spreadsheet = client.open_by_key(sheet_id)
 log_sheet = client.open_by_key(sheet_id).worksheet("Game Sessions")
@@ -627,7 +630,7 @@ def web_get_all_games_info():
             "platforms": row[14],
             "total_price_paid": row[7],
             "total_value_played": row[11],
-            "last_played": row[9],
+            "last_played": (row[9] + " (" + row[8] + ")"),
             "average_session_length": row[12],
             "session_count": str(sum(1 for r in log_data if r[1] == game_name)) + " sessions",
             "cover_url": web_get_game_cover(game_name, gamecover_data)
