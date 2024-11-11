@@ -718,6 +718,8 @@ def get_game_info(game_name):
             print("Developer:              " + row[6])
             print("Total Playtime:         " + row[0] + " (" + row[10] + " hours)")
             print("Platforms played on:    " + row[14])
+            print("Total Price Paid:       " + row[7])
+            print("Total Value Played:     " + row[11])
             print("Last Played:            " + row[9] + " (" + row[8] + ")")
             print("Session Count:         ", get_session_count(), "sessions")
             print("Average Session Length: " + row[12])
