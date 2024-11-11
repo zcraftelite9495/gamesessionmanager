@@ -1,9 +1,11 @@
 import os
 import base64
 import fnmatch
+import tempfile
+import subprocess
 
 # List of file patterns to exclude from encoding
-excluded_files = ['*.py', '*.md', '*.sublime*', '.gitattributes']  # Add filenames or patterns here
+excluded_files = ['*.md', 'packager.py', '*.sublime*']  # Add filenames or patterns here
 # List of directory patterns to exclude from encoding
 excluded_dirs = ['.git']  # Add directory names or patterns here
 
@@ -28,14 +30,35 @@ def should_exclude_dir(dir_name):
             return True
     return False
 
+def remove_tree(path):
+    """Recursively removes a directory and all its contents."""
+    for root, dirs, files in os.walk(path, topdown=False):
+        for name in files:
+            os.remove(os.path.join(root, name))
+        for name in dirs:
+            os.rmdir(os.path.join(root, name))
+    os.rmdir(path)
+
 def create_package(output_file):
-    """Creates a Python file that contains the base64 encoded files."""
+    """Creates a Python file that contains the encoded files."""
     with open(output_file, 'w') as pkg_file:
-        pkg_file.write("# This is an auto-generated package file\n")
+        pkg_file.write("# -------------------------------------\n# Packaged File\n# -------------------------------------\n")
         pkg_file.write("import base64\n")
+        pkg_file.write("import tempfile\n")
+        pkg_file.write("import subprocess\n")
         pkg_file.write("import os\n\n")
-        pkg_file.write("def decode_files():\n")
-        pkg_file.write("    files = {\n")
+
+        pkg_file.write("def remove_tree(path):\n")
+        pkg_file.write("    # Recursively removes a directory and all its contents.\n")
+        pkg_file.write("    for root, dirs, files in os.walk(path, topdown=False):\n")
+        pkg_file.write("        for name in files:\n")
+        pkg_file.write("            os.remove(os.path.join(root, name))\n")
+        pkg_file.write("        for name in dirs:\n")
+        pkg_file.write("            os.rmdir(os.path.join(root, name))\n")
+        pkg_file.write("    os.rmdir(path)\n\n")
+        
+        pkg_file.write("def get_encoded_files():\n")
+        pkg_file.write("    return {\n")
         
         for root, dirs, files in os.walk('.'):
             # Exclude directories that match the exclusion patterns
@@ -46,23 +69,24 @@ def create_package(output_file):
                     file_path = os.path.join(root, file)
                     encoded_data = encode_file(file_path)
                     relative_path = os.path.relpath(file_path).replace('\\', '/')
-                    pkg_file.write(f"        '{relative_path}': '{encoded_data}',\n")
+                    pkg_file.write(f"        '{relative_path}': '''{encoded_data}''',\n")
         
         pkg_file.write("    }\n\n")
-        pkg_file.write("    for rel_path, data in files.items():\n")
-        pkg_file.write("        # Create directories if they don't exist\n")
-        pkg_file.write("        os.makedirs(os.path.dirname(rel_path), exist_ok=True)\n")
-        pkg_file.write("        with open(rel_path, 'wb') as file:\n")
-        pkg_file.write("            file.write(base64.b64decode(data))\n")
-        pkg_file.write("decode_files()\n")
         
-        # Append the content of gamesessionmanager.py
-        try:
-            with open('gamesessionmanager.py', 'r') as game_file:
-                game_code = game_file.read()
-                pkg_file.write("\n" + game_code + "\n")
-        except FileNotFoundError:
-            print("Warning: 'gamesessionmanager.py' not found. Skipping inclusion.")
+        pkg_file.write("\nif __name__ == '__main__':\n")
+        pkg_file.write("    encoded_files = get_encoded_files()\n")
+        pkg_file.write("    temp_dir = tempfile.mkdtemp()\n")
+        pkg_file.write("    print('Decoding files...')\n")
+        pkg_file.write("    for rel_path, encoded_content in encoded_files.items():\n")
+        pkg_file.write("        decoded_file_path = os.path.join(temp_dir, rel_path)\n")
+        pkg_file.write("        os.makedirs(os.path.dirname(decoded_file_path), exist_ok=True)\n")
+        pkg_file.write("        with open(decoded_file_path, 'wb') as file:\n")
+        pkg_file.write("            file.write(base64.b64decode(encoded_content))\n")
+        pkg_file.write("    print('Executing gamesessionmanager.py...')\n")
+        pkg_file.write("    subprocess.run(['python', os.path.join(temp_dir, 'gamesessionmanager.py')])\n")
+        pkg_file.write("    print('Cleaning up...')\n")
+        pkg_file.write("    print(temp_dir)\n")
+        pkg_file.write("    remove_tree(temp_dir)\n")
 
 if __name__ == "__main__":
     output_file_name = "../GameSessionManagerPackage/GSMFull.py"
