@@ -69,7 +69,7 @@ python gamesessionmanager.py
 To launch the web version directly:
 
 ```bash
-python main.py --web
+python gamesessionmanager.py --web
 ```
 
 ### Launcher
