@@ -5,10 +5,11 @@
 # -----------------------------------------------------
 
 # -------------------------------------
-# Version
+# Version Information
 # -------------------------------------
 
-gsmversion = "2.0.0"
+gsmversion = "2.1.0-beta-1"
+gsmstage = "beta"
 
 # -------------------------------------
 # Library Checker
@@ -73,7 +74,7 @@ try:
 
     import webbrowser
 
-    from flask import Flask, render_template, request, redirect, url_for, flash
+    from flask import Flask, session, render_template, request, redirect, url_for, flash
 
     from PyQt5.QtGui import QPixmap
     from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
@@ -176,91 +177,52 @@ def request_admin_permissions():
         raise EnvironmentError("Unsupported OS: " + platform.system())
 
 # -------------------------------------
-# Configuration Files Checker
+# Configuration Files Setup
 # -------------------------------------
 
-# Checks to see if configuration directory & files exist
-def configChecker():
-    """Sets the configuration directory, ensuring it has admin privileges if needed."""
-    # Define the base directory for config files based on the OS
-    if platform.system() == 'Windows':
-        config_dir = Path(os.environ.get('APPDATA', '')).joinpath('gamesessionmanager')
-    elif platform.system() == 'Linux' or platform.system() == 'Darwin':  # Darwin is for macOS
-        config_dir = Path.home().joinpath('.config', 'gamesessionmanager')
-    else:
-        raise EnvironmentError("Unsupported OS: " + platform.system())
-    
-    # Check if the directory exists, and if not, create it
-    if not config_dir.exists():
-        try:
-            config_dir.mkdir(parents=True, exist_ok=True)
-        except PermissionError:
-            print(f"Permission denied. Requesting admin privileges to create the directory: {config_dir}")
-            request_admin_permissions()
-            return set_config_directory()  # Retry after admin permissions
+class configurationSetup:
+    def __init__(self):
+        self.executabledir = os.path.dirname(os.path.abspath(__file__))
+        self.dir = os.path.join(self.executabledir, "config") # Sets the configuration path
+        self.asset_dir = os.path.join(self.executabledir, "assets")
+        self.sheet_id_file = os.path.join(self.dir, "sheetid.txt") # Sets the path for the sheetid.txt file
+        self.token_file = os.path.join(self.dir, "token.json") # Sets the path for the token.json file
+        self.credentials_file = os.path.join(self.dir, "credentials.json") # Sets the path for the credentials.json file
+        
+    def get_asset(self, asset):
+        return os.path.join(self.asset_dir, asset)
 
-    # Check for the files
-    missing_files = []
-    executable_dir = Path(__file__).parent  # Directory of the current script or executable
-    files_to_check = ['credentials.json', 'sheetid.txt']
-    
-    # Check if the files exist in the config directory
-    for file_name in files_to_check:
-        file_path = config_dir.joinpath(file_name)
-        if not file_path.exists():
-            # If the file is missing in the config directory, check the executable directory
-            executable_file_path = executable_dir.joinpath(file_name)
-            if executable_file_path.exists():
-                print(f"Found {file_name} in executable directory, copying to config directory.")
-                # Copy file without using shutil
-                with open(executable_file_path, 'rb') as source_file:
-                    with open(file_path, 'wb') as dest_file:
-                        dest_file.write(source_file.read())
-            else:
-                missing_files.append(file_name)
-    
-    # If any files are missing, raise an error
-    if missing_files:
-        raise FileNotFoundError(f"Missing files: {', '.join(missing_files)}")
-    
-    # Change the current working directory to the config directory
-    os.chdir(config_dir)
-    
-    # Now the current directory is the one containing your configuration files
-    print(f"Configuration directory set to: {config_dir}")
-    return config_dir
+config = configurationSetup() # Sets the config variable to the class for easier importing throughout the code
 
 # -------------------------------------
 # Google Sheets API Functions
 # -------------------------------------
 
+# Sets the configuration directory before loading credentials
+configurationSetup()
+
 # Define the scope for Google Sheets API
 scope = ["https://www.googleapis.com/auth/spreadsheets"]
 
-# Call the function to set the configuration directory
-configChecker()
-
-# Get the sheet ID from the sheetid.txt file
-if os.path.exists("sheetid.txt"):
-    with open("sheetid.txt", 'r') as file:
+# Check and load the sheet ID from the sheetid.txt file
+sheet_id = None
+if os.path.exists(config.sheet_id_file):
+    with open(config.sheet_id_file, 'r') as file:
         sheet_id = file.readline().strip()  # Read the first line and remove any trailing newline or spaces
 
 # Load credentials
 def get_credentials():
     creds = None
-    if os.path.exists("token.json"):
-        creds = Storage("token.json").get()
+    if os.path.exists(config.token_file):
+        creds = Storage(config.token_file).get()
     if not creds or creds.invalid:
-        flow = flow_from_clientsecrets("credentials.json", scope)
-        creds = run_flow(flow, Storage("token.json"))
+        flow = flow_from_clientsecrets(config.credentials_file, scope)
+        creds = run_flow(flow, Storage(config.token_file))
     return creds
 
 # Authorize and connect to Google Sheets
 creds = get_credentials()
 client = gspread.authorize(creds)
-
-executable_dir = Path(__file__).parent
-os.chdir(executable_dir)
 
 # Open the Google Sheets by ID
 spreadsheet = client.open_by_key(sheet_id)
@@ -416,7 +378,7 @@ def launcher():
             
             # Create and add the icon label
             icon_label = QLabel(self)
-            pixmap = QPixmap("./assets/gameControllerIcon.png")  # Load the icon image
+            pixmap = QPixmap(config.get_asset("gameControllerIcon.png"))  # Load the icon image
             icon_label.setPixmap(pixmap.scaled(150, 150, Qt.KeepAspectRatio))  # Resize the icon
             icon_label.setAlignment(Qt.AlignCenter)
             layout.addWidget(icon_label)  # Add icon label to the layout
@@ -511,9 +473,12 @@ if WebserverIP == "0.0.0.0":
 else:
     WebserverHostedIP = WebserverIP
 
+# Configures weather or not the app reloads when a change is detected
+reloaderMode = "False"
+
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # In actual development, you would change this to a secure secret key
+app.secret_key = 'urmum'  # In actual development, you would change this to a secure secret key
 
 # Function to launch the website in a new tab
 def open_site():
@@ -791,7 +756,7 @@ if __name__ == "__main__":
             # Replace with actual web app run logic
             print("Launching web version...")
             open_site()
-            app.run(host=WebserverIP, port=WebserverPort, debug=True, use_reloader=False)
+            app.run(host=WebserverIP, port=WebserverPort, debug=True, use_reloader=reloaderMode)
         elif version_choice == 'terminal':
             main_menu()
         else:
@@ -799,6 +764,6 @@ if __name__ == "__main__":
     elif args.web:
         print("Launching web version...")
         open_site()
-        app.run(host=WebserverIP, port=WebserverPort, debug=True, use_reloader=False)
+        app.run(host=WebserverIP, port=WebserverPort, debug=True, use_reloader=reloaderMode)
     else:
         main_menu()

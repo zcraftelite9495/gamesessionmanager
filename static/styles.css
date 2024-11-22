@@ -51,6 +51,20 @@ html, body {
 /* Navigation */
 .navigation {
     margin: 20px 0; /* Margin above and below */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center align items vertically */
+}
+
+.auth-buttons {
+    margin-left: 0px; /* Space before the buttons */
+    display: flex; /* Use flexbox for buttons */
+}
+
+.divider {
+    width: 1px; /* Width of the divider */
+    height: 30px; /* Height of the divider */
+    background-color: white; /* Color of the divider */
+    margin: 0 20px; /* Spacing around the divider */
 }
 
 .navigation ul {
@@ -185,3 +199,4 @@ input[type="text"] {
 .info-item strong {
     color: #d81b60; /* Color for strong labels */
 }
+
