@@ -1,0 +1,70 @@
+<!-- templates/stopwatch.html -->
+{% extends "base.html" %}
+
+{% block title %}Stopwatch{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Game Session Stopwatch</h2>
+    <form action="/submit_stopwatch" method="POST">
+        <div>
+            <label for="game_name">Game Name:</label>
+            <input type="text" id="game_name" name="game_name" required>
+        </div>
+        <div>
+            <label for="game_platform">Game Platform:</label>
+            <input type="text" id="game_platform" name="game_platform" required>
+        </div>
+        <div>
+            <label for="start_time">Start Time:</label>
+            <input type="text" id="start_time" name="start_time" readonly required>
+        </div>
+        <div>
+            <label for="end_time">End Time:</label>
+            <input type="text" id="end_time" name="end_time" readonly required>
+        </div>
+        <div>
+            <button type="button" id="start_button">Start</button>
+            <button type="button" id="stop_button" disabled>Stop</button>
+            <button type="submit" id="submit_button" disabled>Submit</button>
+        </div>
+    </form>
+    <div id="stopwatch_display">00:00:00</div>
+</div>
+
+<script>
+    let startTime;
+    let interval;
+
+    document.getElementById('start_button').onclick = function() {
+        startTime = Date.now();
+        interval = setInterval(updateStopwatch, 1000);
+        document.getElementById('start_time').value = new Date(startTime).toLocaleTimeString();
+        document.getElementById('start_button').disabled = true;
+        document.getElementById('stop_button').disabled = false;
+        document.getElementById('submit_button').disabled = false;
+    };
+
+    document.getElementById('stop_button').onclick = function() {
+        clearInterval(interval);
+        const endTime = Date.now();
+        document.getElementById('end_time').value = new Date(endTime).toLocaleTimeString();
+        document.getElementById('stop_button').disabled = true;
+        document.getElementById('start_button').disabled = false;
+
+        // Automatically submit the form
+        document.querySelector('form').submit();
+    };
+
+    function updateStopwatch() {
+        const elapsedTime = Date.now() - startTime;
+        const seconds = Math.floor((elapsedTime / 1000) % 60);
+        const minutes = Math.floor((elapsedTime / 60000) % 60);
+        const hours = Math.floor((elapsedTime / 3600000) % 24);
+        document.getElementById('stopwatch_display').innerText = 
+            String(hours).padStart(2, '0') + ':' + 
+            String(minutes).padStart(2, '0') + ':' + 
+            String(seconds).padStart(2, '0');
+    }
+</script>
+{% endblock %}

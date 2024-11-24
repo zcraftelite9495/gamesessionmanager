@@ -8,8 +8,8 @@
 # Version Information
 # -------------------------------------
 
-gsmversion = "2.1.0-beta-1"
-gsmstage = "beta"
+gsmversion = "2.1.0-beta-2-pre1"
+gsmstage = "alpha"
 
 # -------------------------------------
 # Library Checker
@@ -157,13 +157,28 @@ def clear_screen():
 def screen_line():
     print("-" * os.get_terminal_size().columns)  # Line across the terminal width
 
+# Predefined function to create a header for the terminal screens
 def main_title(title_heading):
     print(format_texts(("Z's Game Session Manager", 'left'), (gsmversion, 'right')))
     print("Created, Designed, and Programmed by ZcraftElite")
     screen_line()
     print(format_text(title_heading, 'center'))
     screen_line()
+    prerelease_warning(gsmstage)
     print("")
+
+# Function to show a warning when using a alpha/beta version of the terminal app
+def prerelease_warning(stage):
+    if stage == "beta":
+        print(format_texts(("Warning: You are using a Beta version of Game Session Manager.", 'center')))
+        print(format_texts(("Features are eperimental and some bugs are expected.", 'center')))
+        screen_line()
+        return True
+    elif stage == "alpha":
+        print(format_texts(("Warning: You are using a Alpha version of Game Session Manager.", 'center')))
+        print(format_texts(("Features are highly experimental and lots of bugs are excpected.", 'center')))
+        screen_line()
+        return True
 
 def request_admin_permissions():
     """Request admin privileges for directory creation if needed."""
@@ -474,7 +489,7 @@ else:
     WebserverHostedIP = WebserverIP
 
 # Configures weather or not the app reloads when a change is detected
-reloaderMode = "False"
+reloaderMode = False
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -483,6 +498,11 @@ app.secret_key = 'urmum'  # In actual development, you would change this to a se
 # Function to launch the website in a new tab
 def open_site():
     webbrowser.open("http://" + WebserverHostedIP + ":" + WebserverPort)
+
+# Context Processor (Loads all common variables into the templates)
+@app.context_processor
+def inject_globals():
+    return dict(version=gsmversion, stage=gsmstage)
 
 # Error handler
 @app.errorhandler(Exception)
@@ -497,7 +517,7 @@ def error_page():
 # Flask route for index
 @app.route('/')
 def index():
-    return render_template('index.html', version=gsmversion)
+    return render_template('index.html')
 
 # Flask route for adding entry
 @app.route('/add_entry', methods=['GET', 'POST'])
@@ -660,6 +680,42 @@ def add_log_entry():
     format_columns()
 
     print(f"Entry added: {new_entry}")
+
+@app.route('/submit_stopwatch', methods=['POST'])
+def submit_stopwatch():
+    game_name = request.form['game_name']
+    game_platform = request.form['game_platform']
+    start_time = request.form['start_time']  # This will be in HH:MM:SS format
+    end_time = request.form['end_time']      # This will be in HH:MM:SS format
+
+    # Convert the time inputs to Google Sheets format
+    start_time_gs = time_to_gs_format(start_time)
+    end_time_gs = time_to_gs_format(end_time)
+
+    # Get today's date in Google Sheets format
+    date = date_to_gs_format(datetime.now())
+    
+    # Get the developer name from the totals sheet
+    developer_name = get_developer_name(game_name)
+
+    # Create a new entry for the log sheet
+    new_entry = [date, game_name, game_platform, 0, start_time_gs, end_time_gs, f"=", developer_name]
+
+    # Append the new entry to the log sheet
+    log_sheet.append_row(new_entry)
+    
+    # Update the calculated field for elapsed time
+    new_row_number = len(log_sheet.get_all_values())  # This gives the new last filled row
+    log_sheet.update_cell(new_row_number, 7, f"=F{new_row_number}-E{new_row_number}")
+
+    format_columns()  # Format columns as needed
+
+    flash("Entry added successfully!")
+    return redirect(url_for('index'))
+
+@app.route('/stopwatch')
+def stopwatch():
+    return render_template('stopwatch.html', version=gsmversion)
 
 # Function to check the playtime of a certain game
 def get_game_info(game_name):

@@ -1,6 +1,6 @@
 # Game Session Manager
 
-<img src="https://img.shields.io/badge/Version-2.1.0--beta--1-blue" alt="Version Badge"> <img src="https://img.shields.io/badge/Development_Stage-beta-blue" alt="Development Stage Badge">
+<img src="https://img.shields.io/badge/Version-2.1.0--beta--2--pre1-red" alt="Version Badge"> <img src="https://img.shields.io/badge/Development_Stage-alpha-red" alt="Development Stage Badge">
 <img src="https://img.shields.io/github/languages/top/zcraftelite9495/gamesessionmanager" alt="Top Language"> <img src="https://img.shields.io/github/stars/zcraftelite9495/gamesessionmanager" alt="Stars Badge"> <img src="https://img.shields.io/github/forks/zcraftelite9495/gamesessionmanager" alt="Forks Badge">
 
 This is a program I created in my free time to help interface with my Google Sheet for tracking all my game playtime across various platforms. It’s a personal project that I wanted to share with others on GitHub.
