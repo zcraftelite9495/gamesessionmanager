@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container">
-    <h2>Game Session Stopwatch</h2>
+    <h1>Log using Stopwatch Mode (BETA)</h1>
     <form action="/submit_stopwatch" method="POST">
         <div>
             <label for="game_name">Game Name:</label>
@@ -23,13 +23,16 @@
             <label for="end_time">End Time:</label>
             <input type="text" id="end_time" name="end_time" readonly required>
         </div>
-        <div>
-            <button type="button" id="start_button">Start</button>
-            <button type="button" id="stop_button" disabled>Stop</button>
-            <button type="submit" id="submit_button" disabled>Submit</button>
+        <div class="stopwatch">
+            <div id="stopwatch_display" class="stopwatch_text">00:00:00</div>
+            <div class="stopwatch_button_group">
+                <button class="stopwatch_button start" type="button" id="start_button">Start</button>
+                <button class="stopwatch_button stop" type="button" id="stop_button" disabled>Stop</button>
+                <button class="stopwatch_button cancel" type="button" id="reset_button" disabled>Reset</button>
+            </div>
         </div>
+        <button class="submit-button" type="submit" id="submit_button" disabled>Submit</button>
     </form>
-    <div id="stopwatch_display">00:00:00</div>
 </div>
 
 <script>
@@ -42,6 +45,7 @@
         document.getElementById('start_time').value = new Date(startTime).toLocaleTimeString();
         document.getElementById('start_button').disabled = true;
         document.getElementById('stop_button').disabled = false;
+        document.getElementById('reset_button').disabled = false;
         document.getElementById('submit_button').disabled = false;
     };
 
@@ -54,6 +58,18 @@
 
         // Automatically submit the form
         document.querySelector('form').submit();
+    };
+
+    document.getElementById('reset_button').onclick = function() {
+        // Reset the stopwatch and input fields
+        clearInterval(interval);
+        document.getElementById('stopwatch_display').innerText = '00:00:00';
+        document.getElementById('start_time').value = '';
+        document.getElementById('end_time').value = '';
+        document.getElementById('start_button').disabled = false;
+        document.getElementById('stop_button').disabled = true;
+        document.getElementById('reset_button').disabled = true;
+        document.getElementById('submit_button').disabled = true;
     };
 
     function updateStopwatch() {

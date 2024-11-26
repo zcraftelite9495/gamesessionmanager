@@ -8,7 +8,7 @@
 # Version Information
 # -------------------------------------
 
-gsmversion = "2.1.0-beta-2-pre1"
+gsmversion = "2.1.0-beta-2-pre2"
 gsmstage = "alpha"
 
 # -------------------------------------
@@ -74,7 +74,7 @@ try:
 
     import webbrowser
 
-    from flask import Flask, session, render_template, request, redirect, url_for, flash
+    from flask import Flask, session, render_template, request, redirect, url_for, flash, send_from_directory
 
     from PyQt5.QtGui import QPixmap
     from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
@@ -495,6 +495,8 @@ reloaderMode = False
 app = Flask(__name__)
 app.secret_key = 'urmum'  # In actual development, you would change this to a secure secret key
 
+print(os.path.join(config.executabledir, 'assets'))
+
 # Function to launch the website in a new tab
 def open_site():
     webbrowser.open("http://" + WebserverHostedIP + ":" + WebserverPort)
@@ -510,6 +512,12 @@ def handle_exception(e):
     print(e)
     return redirect(url_for('error_page'))
 
+# Serves the /assets folder
+@app.route('/assets/<path:filename>')
+def assets(filename):
+    return send_from_directory(os.path.join(config.executabledir, 'assets'), filename)
+
+# Error Page
 @app.route('/error')
 def error_page():
     return render_template('error.html')

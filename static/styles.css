@@ -10,7 +10,15 @@ html, body {
 }
 
 .nomargin {
-    margin: 0;
+    margin: 0; /* Remove all margin */
+}
+
+.nobottommargin {
+    margin-bottom: 0; /* Remove bottom margin */
+}
+
+.notopmargin {
+    margin-top: 0; /* Remove top margin */
 }
 
 /* Footer */
@@ -38,8 +46,16 @@ html, body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
-.titlebar .logo img {
-    height: 50px; /* Logo image height */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* Horizontally centered */
+}
+
+.site-icon {
+    width: 64px;  /* Adjust the width */
+    height: 64px; /* Adjust the height */
+    margin-right: 15px;
 }
 
 .site-title {
@@ -53,11 +69,6 @@ html, body {
     margin: 20px 0; /* Margin above and below */
     display: flex; /* Use flexbox for layout */
     align-items: center; /* Center align items vertically */
-}
-
-.auth-buttons {
-    margin-left: 0px; /* Space before the buttons */
-    display: flex; /* Use flexbox for buttons */
 }
 
 .divider {
@@ -88,7 +99,51 @@ html, body {
     color: #ffcc00; /* Change link color on hover */
 }
 
-/* Container */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropbtn {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex; /* Use inline-flex for the button */
+  align-items: center; /* Align items vertically */
+}
+
+.nav-dropbtn:after {
+  content: '\2BC6'; /* Unicode down arrow character */
+  font-size: 0.8em; /* Adjust the font size as needed */
+  color: white; /* Arrow color */
+  margin-left: 0.5em; /* Add margin between text and arrow */
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #EE5A92;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.nav-dropdown:hover .nav-dropdown-content, .nav-dropdown-content.show {
+  display: block;
+}
+
+.nav-dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ED377B;
+}
+
+/* Containers */
 .container {
     max-width: 800px; /* Maximum width */
     min-width: calc(44.44vw); /* Minimum width set to 1/3 of the viewport */
@@ -108,18 +163,14 @@ h2 {
     color: #db8cc6; /* Subheading color */
 }
 
-.doubleheading1 {
-    margin-bottom: 0; /* Remove bottom margin */
-}
-
-.doubleheading2 {
-    margin-top: 0; /* Remove top margin */
-}
-
 /* Buttons */
+button:disabled, .disabled-button {
+    cursor: not-allowed;
+}
+
 .button, input[type="submit"], .submit-button {
+    /* Default Button */
     display: inline-block; /* Button styled as inline block */
-    background-color: #d81b60; /* Background color */
     color: white; /* Text color */
     padding: 10px; /* Padding inside button */
     border: none; /* No border */
@@ -129,24 +180,19 @@ h2 {
     text-decoration: none; /* Ensures the button does not get underlined */
 }
 
-.button:hover, input[type="submit"]:hover, .submit-button:hover {
+.button, input[type="submit"], .submit-button { 
+    /* Default Button Enabled */
+    background-color: #d81b60; /* Background color */
+}
+
+.button:hover:not(:disabled), input[type="submit"]:hover:not(:disabled), .submit-button:hover:not(:disabled) {
+    /* Default Button Hover */
     background-color: #c2185b; /* Darker pink on hover */
 }
 
-.view_sheet_button {
-    display: inline-block; /* Button styled as inline block */
-    background-color: #579539; /* Background color */
-    color: white; /* Text color */
-    padding: 10px; /* Padding inside button */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition */
-    text-decoration: none; /* Ensures the button does not get underlined */
-}
-
-.view_sheet_button:hover {
-    background-color: #2F7F2D;
+.button:disabled, input[type="submit"]:disabled, .submit-button:disabled, .disabled-button {
+    /* Default Button Disabled */
+    background-color: #DFA7BC; /* Background color */
 }
 
 /* Input Fields */
@@ -161,6 +207,88 @@ input[type="text"] {
     margin-bottom: 15px; /* Bottom margin for spacing */
     border: 1px solid #e91e63; /* Input border color */
     border-radius: 5px; /* Rounded corners */
+}
+
+/* ----------------------------- Page Specific ----------------------------- */
+
+/* Home Page */
+#home-container {
+    display: flex;
+    align-items: center;
+}
+
+#homepage-logo {
+    height: 128px;
+    width: 128px;
+    margin-right: 25px;
+}
+
+#homepage-feature-showcase {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+    grid-template-rows: auto auto; /* Two rows */
+    gap: 20px; /* Space between grid items */
+    justify-content: center; /* Center the grid horizontally */
+    align-items: center; /* Center items vertically within their grid cells */
+}
+
+.homepage-button-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    align: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.homepage-button-container:last-child {
+    grid-column: span 2; /* Make it span both columns */
+    justify-self: center; /* Center it horizontally */
+}
+
+.homepage-button {
+    /* Homepage Button */
+    display: inline-block; /* Button styled as inline block */
+    color: white; /* Text color */
+    background-color: #d81b60; /* Background color */
+    padding: 10px; /* Padding inside button */
+    margin-top: 5px;
+    magin-bottom: 5px;
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    text-decoration: none; /* Ensures the button does not get underlined */
+    min-width: calc(100% - 110px); /* Takes up all space - the margin */
+}
+
+.homepage-button:hover {
+    /* Default Button Hover */
+    background-color: #c2185b; /* Darker pink on hover */
+}
+
+.homepage-label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.view_sheet_button {
+    display: inline-block; /* Button styled as inline block */
+    background-color: #579539; /* Background color */
+    color: white; /* Text color */
+    padding: 10px; /* Padding inside button */
+    margin-top: 5px;
+    magin-bottom: 5px;
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    text-decoration: none; /* Ensures the button does not get underlined */
+    min-width: calc(200% - 110px); /* Takes up all space - the margin */
+}
+
+.view_sheet_button:hover {
+    background-color: #2F7F2D;
 }
 
 /* Game Info Card */
@@ -200,3 +328,56 @@ input[type="text"] {
     color: #d81b60; /* Color for strong labels */
 }
 
+/* Stopwatch */
+.stopwatch {
+    display: flex; /* Sets flex display type */
+    gap: 10px; /* Sets gap between elements */
+}
+
+.stopwatch_text {
+    font-size: 110px; /* Font Size */
+    font-family: Arial, sans-serif; /* Font */
+    font-weight: bold; /* Bolds the font */
+    white-space: nowrap; /* Turns off word-wrapping */
+}
+
+.stopwatch_button_group {
+    display: flex; /* Sets flex display type */
+    flex-direction: column; /* Sets the flex direction to be a column */
+    gap: 5px; /* Sets gap between elements */
+}
+
+.stopwatch_button {
+    display: inline-block; /* Button styled as inline block */
+    color: white; /* Text color */
+    padding: 10px; /* Padding inside button */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    text-decoration: none; /* Ensures the button does not get underlined */
+}
+
+.stopwatch_button.start:enabled {
+    background-color: #30D158; /* Background color */
+}
+
+.stopwatch_button.start:disabled {
+    background-color: #AFFFC3; /* Background color */
+}
+
+.stopwatch_button.stop:enabled {
+    background-color: #FF3B30; /* Background color */
+}
+
+.stopwatch_button.stop:disabled {
+    background-color: #FFB3B3; /* Background color */
+}
+
+.stopwatch_button.cancel:enabled {
+    background-color: #007BFF; /* Background color */
+}
+
+.stopwatch_button.cancel:disabled {
+    background-color: #A3C9FF; /* Background color */
+}

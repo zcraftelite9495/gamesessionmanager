@@ -1,7 +1,7 @@
 # Game Session Manager
 
-<img src="https://img.shields.io/badge/Version-2.1.0--beta--2--pre1-red" alt="Version Badge"> <img src="https://img.shields.io/badge/Development_Stage-alpha-red" alt="Development Stage Badge">
-<img src="https://img.shields.io/github/languages/top/zcraftelite9495/gamesessionmanager" alt="Top Language"> <img src="https://img.shields.io/github/stars/zcraftelite9495/gamesessionmanager" alt="Stars Badge"> <img src="https://img.shields.io/github/forks/zcraftelite9495/gamesessionmanager" alt="Forks Badge">
+<img src="https://img.shields.io/badge/Version-2.1.0--beta--2--pre2-red" alt="Version Badge"> <img src="https://img.shields.io/badge/Development_Stage-alpha-red" alt="Development Stage Badge">
+<img src="https://wakatime.com/badge/user/018db32b-732a-4704-b635-68d311538b3f/project/8d41e1a9-a75f-44c4-9094-7c557ccc6b79.svg" alt="wakatime"> <img src="https://img.shields.io/github/languages/top/zcraftelite9495/gamesessionmanager" alt="Top Language"> <img src="https://img.shields.io/github/stars/zcraftelite9495/gamesessionmanager" alt="Stars Badge"> <img src="https://img.shields.io/github/forks/zcraftelite9495/gamesessionmanager" alt="Forks Badge">
 
 This is a program I created in my free time to help interface with my Google Sheet for tracking all my game playtime across various platforms. It’s a personal project that I wanted to share with others on GitHub.
 
@@ -26,18 +26,24 @@ This is a program I created in my free time to help interface with my Google She
 - [License](#license)
 - [Contact](#contact)
 
+## Additional Links
+
+- [Changelog](changelog.md)
+
 ## Installation
 
-To get started with the Game Session Manager, follow these steps:
+To get started with the Game Session Manager, you can use it in two ways:
 
 1. **Clone the repository:**
+   
+   **Download Source**
+   Go to the `releases` tab to easily find the latest stable, beta, or alpha release.
+   There you can download and extract the `.zip` file to get the repo
 
-   Using git
+   **Use Fully Compiled File**
+   Additionally, you can download the `GSMFull.py` file.
 
-   ```bash
-   git clone https://github.com/zcraftelite9495/gamesessionmanager.git
-   cd gamesessionmanager
-   ```
+   NOTE: Some AnitVirus systems may flag it as suspicious (I personally use Avast, and it captures it with CyberCapture and scans it before allowing you to use it.). It is built with *Inno Setup* using the `gsmsetup.iss` file. 
 
 2. **Install the required libraries:**
 
