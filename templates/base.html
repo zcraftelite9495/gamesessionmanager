@@ -5,16 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Game Session Manager{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('assets', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="titlebar">
-        <h1 class="site-title">Z's Game Session Manager</h1>
+        <div class="site-header">
+            <img src="/assets/gameControllerIcon-White.png" alt="Game Controller Icon" class="site-icon">
+            <h1 class="site-title">Z's Game Session Manager</h1>
+        </div>
         <nav class="navigation">
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/stopwatch">Stopwatch Mode (BETA)</a></li>
-                <li><a href="/add_entry">Add Log Entry</a></li>
+                <li>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-dropbtn">Log Now</a>
+                        <div class="nav-dropdown-content">
+                            <a href="/stopwatch">Log with Stopwatch Mode (BETA)</a>
+                            <a href="/add_entry">Log Manually</a>
+                        </div>
+                    </div>
+                </li>
                 <li><a href="/check_game_info">Check Game Info</a></li>
                 <li><a href="/list_games">List All Games</a></li>
             </ul>
@@ -30,10 +41,28 @@
     <footer class="footer">
         <p>Game Session Manager ({{ version }}) &copy; 2024 Zena Comerford/ZcraftElite</p>
         {% if stage == 'alpha' %}
-            <p class="warning">Warning: You are using an Alpha/Pre-beta version of Game Session Manager.</br>Features are highly experimental and lots of bugs are excpected.</p>
+            <p class="warning">Warning: You are using an Alpha/Pre-beta version of Game Session Manager.</br>Features are highly experimental and lots of bugs are expected.</p>
         {% elif stage == 'beta' %}
-            <p class="warning">Warning: You are using a Beta version of this Game Session Manager.</br>Features are eperimental and some bugs are expected.</p>
+            <p class="warning">Warning: You are using a Beta version of this Game Session Manager.</br>Features are experimental and some bugs are expected.</p>
         {% endif %}
     </footer>
 </body>
+<!-- Script for Dropdowns -->
+<script>
+    document.addEventListener("click", function(e) {
+      const dropdown = document.querySelector(".nav-dropdown");
+      if (!dropdown.contains(e.target)) {
+        const dropdownContent = document.querySelector(".nav-dropdown-content");
+        dropdownContent.classList.remove("show");
+        document.querySelector(".nav-dropbtn").classList.remove("up-arrow");
+      }
+    });
+
+    document.querySelector(".nav-dropbtn").addEventListener("click", function() {
+      const dropdownContent = document.querySelector(".nav-dropdown-content");
+      dropdownContent.classList.toggle("show");
+      document.querySelector(".nav-dropbtn").classList.toggle("up-arrow");
+    });
+</script>
+<!-- END SCRIPT -->
 </html>

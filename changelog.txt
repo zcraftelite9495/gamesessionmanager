@@ -1,9 +1,0 @@
-Changelog: 2.1.0-beta-2-pre1 (Alpha)
-* Started utilizing the GitHub releases feature for better version tracking.
-* Started a plain changelog for me to personally keep better track of changes I make between versions.
-* Fixed an bug with my default value for the reloaderMode variable.
-* Introduced Stopwatch Tracking (Beta).
-* Added a warning to the footer (in the web version) when the user is running an Alpha or Beta version of the program.
-* Added a warning to the titlebar (in the terminal version) when the user is running an Alpha or Beta version of the program.
-* Added the program name and the current version under alongside the copyright information.
-END OF VERSION

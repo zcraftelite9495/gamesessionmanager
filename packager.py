@@ -5,9 +5,9 @@ import tempfile
 import subprocess
 
 # List of file patterns to exclude from encoding
-excluded_files = ['*.md', 'packager.py', '*.sublime*']  # Add filenames or patterns here
+excluded_files = ['*.md', 'packager.py', '*.sublime*', 'commit.py', 'changelog.md', '.gitattributes']  # Add filenames or patterns here
 # List of directory patterns to exclude from encoding
-excluded_dirs = ['.git']  # Add directory names or patterns here
+excluded_dirs = ['.git', 'config', '__pycache__']  # Add directory names or patterns here
 
 def encode_file(file_path):
     """Encodes a file to base64."""
