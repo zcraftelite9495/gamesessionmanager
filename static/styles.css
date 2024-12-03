@@ -46,6 +46,10 @@ html, body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
+.site-header-link {
+    text-decoration: none;
+}
+
 .site-header {
     display: flex;
     align-items: center;
@@ -154,6 +158,12 @@ html, body {
     border-radius: 10px; /* Rounded corners */
 }
 
+.container-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 /* Headings */
 h1 {
     color: #d81b60; /* Main heading color */
@@ -207,6 +217,23 @@ input[type="text"] {
     margin-bottom: 15px; /* Bottom margin for spacing */
     border: 1px solid #e91e63; /* Input border color */
     border-radius: 5px; /* Rounded corners */
+}
+
+input[type="text"].readonly {
+    background-color: #D5D5D5;
+}
+
+input[type="date"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px; /* Padding inside */
+    margin-bottom: 15px; /* Bottom margin for spacing */
+    border: 1px solid #e91e63; /* Input border color */
+    border-radius: 5px; /* Rounded corners */
+    background-color: white; /* White background */
+}
+
+input[type="date"].readonly {
+    background-color: #D5D5D5; /* Grey background for readonly */
 }
 
 /* ----------------------------- Page Specific ----------------------------- */
@@ -291,6 +318,11 @@ input[type="text"] {
     background-color: #2F7F2D;
 }
 
+#last-played-container {
+    display: flex;
+    align-items: center;
+}
+
 /* Game Info Card */
 .game-info-card {
     background: #fff; /* White background */
@@ -329,55 +361,67 @@ input[type="text"] {
 }
 
 /* Stopwatch */
+.stopwatch_container {
+    dispaly: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
 .stopwatch {
-    display: flex; /* Sets flex display type */
-    gap: 10px; /* Sets gap between elements */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    width: fit-content; /* Ensures the width is determined by the content (stopwatch text and buttons) */
 }
 
 .stopwatch_text {
-    font-size: 110px; /* Font Size */
-    font-family: Arial, sans-serif; /* Font */
-    font-weight: bold; /* Bolds the font */
-    white-space: nowrap; /* Turns off word-wrapping */
+    font-size: 110px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
 .stopwatch_button_group {
-    display: flex; /* Sets flex display type */
-    flex-direction: column; /* Sets the flex direction to be a column */
-    gap: 5px; /* Sets gap between elements */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%; /* Ensures the button group fills the remaining space */
+    justify-content: space-between; /* Ensures buttons are spaced out */
 }
 
 .stopwatch_button {
-    display: inline-block; /* Button styled as inline block */
-    color: white; /* Text color */
-    padding: 10px; /* Padding inside button */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition */
-    text-decoration: none; /* Ensures the button does not get underlined */
+    display: inline-block;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    flex-grow: 1; /* Makes the buttons expand equally to fill the available space */
 }
 
 .stopwatch_button.start:enabled {
-    background-color: #30D158; /* Background color */
+    background-color: #30D158;
 }
 
 .stopwatch_button.start:disabled {
-    background-color: #AFFFC3; /* Background color */
+    background-color: #AFFFC3;
 }
 
 .stopwatch_button.stop:enabled {
-    background-color: #FF3B30; /* Background color */
+    background-color: #FF3B30;
 }
 
 .stopwatch_button.stop:disabled {
-    background-color: #FFB3B3; /* Background color */
+    background-color: #FFB3B3;
 }
 
 .stopwatch_button.cancel:enabled {
-    background-color: #007BFF; /* Background color */
+    background-color: #007BFF;
 }
 
 .stopwatch_button.cancel:disabled {
-    background-color: #A3C9FF; /* Background color */
+    background-color: #A3C9FF;
 }

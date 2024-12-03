@@ -5,7 +5,13 @@
 
 {% block content %}
     <div class="container">
-        <h1>List of Games</h1>
+        <div class="container-header">
+            <img src="{{ url_for('assets', filename='infoIcon.svg') }}" width="64" height="64">
+            <h1>All Games Info</h1>
+        </div>
+
+        <hr style="border: 1px solid black; margin: 30px 0 30px">
+
         {% for game in games_info %}
         <div class="game-info-card">
             <div class="game-info">
@@ -37,7 +43,7 @@
                     </div>
                     <div class="info-item">
                         <strong>Last Played:</strong>
-                        <span>{{ game.last_played }}</span>
+                        <span>{{ game.last_played }} ({{ game.last_played_date }})</span>
                     </div>
                     <div class="info-item">
                         <strong>Average Session Length:</strong>

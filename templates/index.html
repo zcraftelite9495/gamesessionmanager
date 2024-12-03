@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="container">
-        <!-- Splash Art -->
+
         <div id="home-container">
             <img src="{{ url_for('assets', filename='gameControllerIcon-Pink.png') }}" id="homepage-logo" type="image/png">
             <div>
@@ -14,9 +14,9 @@
                 <h5 class="notopmargin" style="color: gray">Powered by Google Sheets API</h5>
             </div>
         </div>
-        <!-- END SECTION -->
+
         <hr style="border: 1px solid black">
-        <!-- Feature Showcase -->
+
         <div id="homepage-feature-showcase">
             <div class="homepage-button-container">
                 <h2 class="homepage-label" style="color: #d81b60;">Log a Session</h2>
@@ -29,10 +29,66 @@
                 <a class="homepage-button" href="/list_games">All Games</a>
             </div>
             <div class="homepage-button-container">
-                <h2 clas="homepage-label" style="color: #579539;">Make your own sheet!</h2>
+                <h2 class="homepage-label" style="color: #579539;">Make your own sheet!</h2>
                 <a class="view_sheet_button" href="https://docs.google.com/spreadsheets/d/1cYQ8B-lnzHLaO32mFZJTweRy8vqjr0Wm2kmcHEcFP8A/edit?gid=329820141#gid=329820141">View Google Sheet</a>
             </div>
         </div>
-        </br>
+
+    </div>
+
+    <div class="container">
+
+        <div id="last-played-container">
+            <img src="{{ url_for('assets', filename='gameControllerHistoryIcon.png') }}" id="homepage-logo" type="image/png">
+            <div>
+                <h1 class="nobottommargin">Last Played</h1>
+                <h2 class="notopmargin">Played for {{ game.session_length }} about {{ game.last_played }}</h2>
+            </div>
+        </div>
+
+        <hr style="border: 1px solid black; margin-bottom: 30px">
+        
+        <div class="game-info" id="last-played-info">
+            <img src="{{ game.cover_url }}" alt="{{ game.game_name }} Cover" class="game-cover">
+            <div class="info-details">
+                <div class="info-item">
+                    <strong>Game Name:</strong>
+                    <span>{{ game.game_name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Developer:</strong>
+                    <span>{{ game.developer }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Total Playtime:</strong>
+                    <span>{{ game.total_playtime }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Platforms:</strong>
+                    <span>{{ game.platforms }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Price Paid:</strong>
+                    <span>{{ game.total_price_paid }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Value Played:</strong>
+                    <span>{{ game.total_value_played }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Last Played:</strong>
+                    <span>{{ game.last_played }} ({{ game.last_played_date }})</span>
+                </div>
+                <div class="info-item">
+                    <strong>Average Session Length:</strong>
+                    <span>{{ game.average_session_length }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Session Count:</strong>
+                    <span>{{ game.session_count }}</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}

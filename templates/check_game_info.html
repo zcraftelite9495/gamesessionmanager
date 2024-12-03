@@ -5,21 +5,62 @@
 
 {% block content %}
     <div class="container">
-        <h1>Check Game Info</h1>
-        <form method="post">
+        <div class="container-header">
+            <img src="{{ url_for('assets', filename='infoIcon.svg') }}" width="64" height="64">
+            <h1>Check Game Info</h1>
+        </div>
+
+        <hr style="border: 1px solid black; margin: 30px 0 30px">
+
+        <form id="game-info-form">
             <label for="game_name">Game Name:</label>
             <input type="text" name="game_name" id="game_name" required>
             <input class="submit-button" type="submit" value="Check Info">
         </form>
-        {% if game_info %}
-            <h2>Game Information</h2>
-            <p>Game Name: {{ game_info.game_name }}</p>
-            <p>Developer: {{ game_info.developer }}</p>
-            <p>Total Playtime: {{ game_info.total_playtime }}</p>
-            <p>Platforms: {{ game_info.platforms }}</p>
-            <p>Last Played: {{ game_info.last_played }}</p>
-            <p>Average Session Length: {{ game_info.average_session_length }}</p>
-            <p>Session Count: {{ game_info.session_count }}</p>
-        {% endif %}
+        <div id="game-info-container"></div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('game-info-form').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent default form submission
+        const gameName = document.getElementById('game_name').value;
+
+        // Fetch game info using AJAX
+        fetch(`/get_game_info?game_name=${encodeURIComponent(gameName)}`)
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('game-info-container');
+                if (data.success) {
+                    const game = data.game;
+                    container.innerHTML = `
+                        <div class="game-info-card">
+                            <h2>Game Information</h2>
+                            <div class="game-info">
+                                <img src="${game.cover_url}" alt="${game.game_name} Cover" class="game-cover">
+                                <div class="info-details">
+                                    <div class="info-item"><strong>Game Name:</strong> ${game.game_name}</div>
+                                    <div class="info-item"><strong>Developer:</strong> ${game.developer}</div>
+                                    <div class="info-item"><strong>Total Playtime:</strong> ${game.total_playtime}</div>
+                                    <div class="info-item"><strong>Platforms:</strong> ${game.platforms}</div>
+                                    <div class="info-item"><strong>Price Paid:</strong> ${game.total_price_paid}</div>
+                                    <div class="info-item"><strong>Value Played:</strong> ${game.total_value_played}</div>
+                                    <div class="info-item"><strong>Last Played:</strong> ${game.last_played} (${game.last_played_date})</div>
+                                    <div class="info-item"><strong>Average Session Length:</strong> ${game.average_session_length}</div>
+                                    <div class="info-item"><strong>Session Count:</strong> ${game.session_count}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `<div class="error-message">${data.message}</div>`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('game-info-container').innerHTML =
+                    `<div class="error-message">An error occurred: ${error.message}</div>`;
+            });
+    });
+</script>
 {% endblock %}

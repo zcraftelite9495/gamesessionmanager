@@ -8,8 +8,8 @@
 # Version Information
 # -------------------------------------
 
-gsmversion = "2.1.0-beta-2-pre2"
-gsmstage = "alpha"
+gsmversion = "2.1.0-beta-2"
+gsmstage = "beta"
 
 # -------------------------------------
 # Library Checker
@@ -74,7 +74,7 @@ try:
 
     import webbrowser
 
-    from flask import Flask, session, render_template, request, redirect, url_for, flash, send_from_directory
+    from flask import Flask, session, render_template, request, redirect, url_for, flash, send_from_directory, jsonify
 
     from PyQt5.QtGui import QPixmap
     from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
@@ -517,6 +517,11 @@ def handle_exception(e):
 def assets(filename):
     return send_from_directory(os.path.join(config.executabledir, 'assets'), filename)
 
+# Serves the /scripts folder
+@app.route('/script/<path:filename>')
+def script(filename):
+    return send_from_directory(os.path.join(config.executabledir, 'scripts'), filename)
+
 # Error Page
 @app.route('/error')
 def error_page():
@@ -525,7 +530,51 @@ def error_page():
 # Flask route for index
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Get all games data
+    totals_data = totals_sheet.get_all_values()
+
+    # Variable to store the most recent game data
+    latest_game = None
+    latest_played_date = None
+
+    # Skip the first row by starting from index 1 and iterate through the rest
+    for row in totals_data[1:]:
+        try:
+            # Skip rows with empty "last_played" value
+            last_played_str = row[8]  # Assuming row[8] has the "Last Played" date
+            if not last_played_str:  # Skip if "Last Played" is empty
+                continue
+            
+            # Parse the last_played date from the string
+            last_played_date = datetime.strptime(last_played_str, "%m/%d/%Y %I:%M:%S %p")
+            
+            # If it's the first game or the game has a more recent last_played date, update
+            if latest_played_date is None or last_played_date > latest_played_date:
+                latest_played_date = last_played_date
+                latest_game = row
+        except Exception as e:
+            print(f"Error parsing date for game {row[5]}: {e}")
+            continue
+    
+    # If a game was found, get its details
+    if latest_game:
+        game_info = {
+            "game_name": latest_game[5],
+            "developer": latest_game[6],
+            "total_playtime": f"{latest_game[0]} ({latest_game[10]} hours)",
+            "platforms": latest_game[14],
+            "total_price_paid": latest_game[7],
+            "total_value_played": latest_game[11],
+            "last_played": latest_game[9],
+            "last_played_date": latest_game[8],
+            "average_session_length": latest_game[12],
+            "session_count": f"{sum(1 for r in log_sheet.get_all_values() if r[1] == latest_game[5])} sessions",
+            "cover_url": web_get_game_cover(latest_game[5], gamecover_sheet.get_all_values()),
+            "session_length": latest_game[17]
+        }
+        return render_template('index.html', game=game_info)
+    
+    return render_template('index.html', game=None) 
 
 # Flask route for adding entry
 @app.route('/add_entry', methods=['GET', 'POST'])
@@ -568,6 +617,37 @@ def add_entry():
     
     return render_template('add_entry.html', version=gsmversion)
 
+@app.route('/get_game_info')
+def get_game_info():
+    game_name = request.args.get('game_name')
+    if not game_name:
+        return jsonify({"success": False, "message": "Game name not provided"})
+
+    # Fetch all games data
+    totals_data = totals_sheet.get_all_values()
+
+    # Find the matching game
+    for row in totals_data[1:]:  # Skip header row
+        if row[5].strip().lower() == game_name.strip().lower():  # Assuming row[5] contains game name
+            game_info = {
+                "game_name": row[5],
+                "developer": row[6],
+                "total_playtime": f"{row[0]} ({row[10]} hours)",
+                "platforms": row[14],
+                "total_price_paid": row[7],
+                "total_value_played": row[11],
+                "last_played": row[9],
+                "last_played_date": row[8],
+                "average_session_length": row[12],
+                "session_count": f"{sum(1 for r in log_sheet.get_all_values() if r[1] == row[5])} sessions",
+                "cover_url": web_get_game_cover(row[5], gamecover_sheet.get_all_values())
+            }
+            return jsonify({"success": True, "game": game_info})
+
+    # No game found
+    return jsonify({"success": False, "message": "Game not found"})
+
+
 # Flask route for checking game info
 @app.route('/check_game_info', methods=['GET', 'POST'])
 def check_game_info():
@@ -589,10 +669,10 @@ def web_get_game_info(game_name):
                 "platforms": row[14],
                 "total_price_paid": row[7],
                 "total_value_played": row[11],
-                "last_played": row[9],
+                "last_played": (row[9] + " (" + row[8] + ")"),
                 "average_session_length": row[12],
-                "session_count": str(sum(1 for r in log_sheet.get_all_values() if r[1] == game_name)) + " sessions",
-                "cover_url": web_get_game_cover(game_name, gamecover_sheet.get_all_values())
+                "session_count": str(sum(1 for r in log_data if r[1] == game_name)) + " sessions",
+                "cover_url": web_get_game_cover(game_name, gamecover_data)
             }
     return None
 
@@ -623,7 +703,8 @@ def web_get_all_games_info():
             "platforms": row[14],
             "total_price_paid": row[7],
             "total_value_played": row[11],
-            "last_played": (row[9] + " (" + row[8] + ")"),
+            "last_played": row[9],
+            "last_played_date": row[8],
             "average_session_length": row[12],
             "session_count": str(sum(1 for r in log_data if r[1] == game_name)) + " sessions",
             "cover_url": web_get_game_cover(game_name, gamecover_data)

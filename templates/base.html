@@ -10,10 +10,12 @@
 </head>
 <body>
     <div class="titlebar">
-        <div class="site-header">
-            <img src="/assets/gameControllerIcon-White.png" alt="Game Controller Icon" class="site-icon">
-            <h1 class="site-title">Z's Game Session Manager</h1>
-        </div>
+        <a href="/" class="site-header-link">
+            <div class="site-header">
+                <img src="{{ url_for('assets', filename='gameControllerIcon-White.png') }}" alt="Game Controller Icon" class="site-icon">
+                <h1 class="site-title">Z's Game Session Manager</h1>
+            </div>
+        </a>
         <nav class="navigation">
             <ul>
                 <li><a href="/">Home</a></li>
@@ -47,22 +49,10 @@
         {% endif %}
     </footer>
 </body>
-<!-- Script for Dropdowns -->
-<script>
-    document.addEventListener("click", function(e) {
-      const dropdown = document.querySelector(".nav-dropdown");
-      if (!dropdown.contains(e.target)) {
-        const dropdownContent = document.querySelector(".nav-dropdown-content");
-        dropdownContent.classList.remove("show");
-        document.querySelector(".nav-dropbtn").classList.remove("up-arrow");
-      }
-    });
-
-    document.querySelector(".nav-dropbtn").addEventListener("click", function() {
-      const dropdownContent = document.querySelector(".nav-dropdown-content");
-      dropdownContent.classList.toggle("show");
-      document.querySelector(".nav-dropbtn").classList.toggle("up-arrow");
-    });
-</script>
-<!-- END SCRIPT -->
+<!-- JAVASCRIPT SCRIPTS -->
+<script src="{{ url_for('script', filename='dropdown.js') }}"></script>
+<script src="{{ url_for('script', filename='requiredLabels.js') }}"></script>
+{% block scripts %}
+<!-- Page-specific scripts will go here -->
+{% endblock %}
 </html>
