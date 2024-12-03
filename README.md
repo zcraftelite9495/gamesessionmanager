@@ -30,7 +30,7 @@ This is a program I created in my free time to help interface with my Google She
 
 - [Changelog](changelog.md)
 - [Copyright Information](COPYINFO.md)
-- [License](LICENSE.md) ([Normal Version](LICENSE))
+- [License](LICENSE.md)
 
 ## Installation
 

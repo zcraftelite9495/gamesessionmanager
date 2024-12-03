@@ -95,4 +95,4 @@ END OF VERSION
 * ➕ Added the `COPYINFO.md` file to contain copyright info about works used within the repo.
 * ➕ Added emojis to most markdown files for some spark.
 * 🔄 Redesigned the changelog to make it more beautiful.
-* ⛔ 
+* ⛔ Removed `game_info.html` and instead used a AJAX request instead to fetch the game's info.
