@@ -96,3 +96,37 @@ END OF VERSION
 * ➕ Added emojis to most markdown files for some spark.
 * 🔄 Redesigned the changelog to make it more beautiful.
 * ⛔ Removed `game_info.html` and instead used a AJAX request instead to fetch the game's info.
+
+---
+
+### 📜🔵 Changelog: 2.1.0 (Stable)
+* ➕ Added a new `--app` command argument to launch the webapp in a independent window.
+* 🔄 Redid the logic for the launcher applet to be much easier to code and modify later.
+* ➕ Added a `App (NEW)` button to the launcher applet to compensate for the addition of the app interface.
+* ➕ Added in `pygame` in order to use it's music support for fun.
+* ➕ Added in the Windows XP tour music to the launcher applet.
+* ➕ Added in a special easter egg to the launcher applet.
+* ➕ Added in support for changing the windows AppID.
+* ➕ Added in the functionality to set relevant OS Environment variables automatically.
+* 🔄 Instead of constantly rewriting code, used the newer `/api/get_game_info` API to get the game information whenever the implimentation was possible.
+* ➕ Added a system tray icon to indicate when the app is running, and run various commands when needed.
+* 🔄 Instead of constantly rewriting code, used the newer `/api/add_entry` API to log new sessions whenever the implimentation was possible.
+* ➕ Added an about menu that is located in the system tray applet when the app interface is running.
+* ➕ Added more recently played entries to the recently played (they just aren't expanded like the most recently played one is)
+* ➕ Added a 3-dot menu to the recently played enteries to allow you to quickly access information about those games.
+* ➕ Added an `Game Options` button under game covers to allow you to quickly access information about those games.
+* ➕ Added an system to easily fill in the details of the game you want to view information for or the game you want to log a session for.
+* ➕ Added a `changelog` page to the site and added it to an `about` section in the titlebar.
+    * ➕ Set up the changelog to automatically format the emojis with a backround for emphasis.
+    * ➕ Set up javascript to create a button that allows you to show/hide the changelog text.
+* ➕ Added a `about` page to the site and added it to an `about` section in the titlebar.
+* 🐛 Fixed formatting error with the footer design.
+* ➕ Added the version number of the program to the launcher applet.
+* ⛔ Marked the terminal version as `deprecated` until it gets updated in a later patch.
+* 🔄 Reordered buttons on the launcher applet to group app & web versions together, as it makes sense due to their similarities.
+* ➕ Added a function to the main program to save a list of possible games with their relative icons.
+* ➕ Added a suggestions feature that will suggest game names as you type, this makes it easier to not have to type special characters that may be present in some game names.
+* ➕ Added a function to save the total hours played and embed it inside of the homepage.
+* ➕ Added the G.A.Y. (Gaming Activity Yields) Chart which will calculate based on all of your game data to the homepage.
+* 🔄 Changed the placeholders for icons/logos/covers that are not found to match the site's design.
+* 🔄 Changed the site name branding to use a public font called `Chewy` that I liked.

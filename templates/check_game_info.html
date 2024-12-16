@@ -1,4 +1,3 @@
-<!-- templates/check_game_info.html -->
 {% extends 'base.html' %}
 
 {% block title %}Check Game Info - Game Session Manager{% endblock %}
@@ -14,7 +13,10 @@
 
         <form id="game-info-form">
             <label for="game_name">Game Name:</label>
-            <input type="text" name="game_name" id="game_name" required>
+            <div style="position: relative;">
+                <input type="text" name="game_name" id="game_name" autocomplete="off" required>
+                <div id="suggestions" class="suggestions" style="display: none;"></div>
+            </div>
             <input class="submit-button" type="submit" value="Check Info">
         </form>
         <div id="game-info-container"></div>
@@ -23,12 +25,36 @@
 
 {% block scripts %}
 <script>
+    // Function to get URL query parameters
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Pre-fill the game_name field if the query parameter is present
+    document.addEventListener('DOMContentLoaded', function () {
+        const gameNameParam = getQueryParam('game_name');
+        if (gameNameParam) {
+            document.getElementById('game_name').value = decodeURIComponent(gameNameParam);
+        }
+
+        // Check if autosubmit is set to 1
+        const autosubmitParam = getQueryParam('autosubmit');
+        if (autosubmitParam === '1') {
+            setTimeout(function() {
+                document.getElementById('game-info-form').requestSubmit();
+            }, 500); 
+        }
+    });
+</script>
+
+<script>
     document.getElementById('game-info-form').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent default form submission
         const gameName = document.getElementById('game_name').value;
 
         // Fetch game info using AJAX
-        fetch(`/get_game_info?game_name=${encodeURIComponent(gameName)}`)
+        fetch(`/api/get_game_info?game_name=${encodeURIComponent(gameName)}`)
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('game-info-container');
@@ -36,9 +62,32 @@
                     const game = data.game;
                     container.innerHTML = `
                         <div class="game-info-card">
-                            <h2>Game Information</h2>
+                            <div class="horizontal-div-text">
+                                <div class="left-content">
+                                    <img style="height: 24px; width: 24px; margin-right: 10px" src="${game.icon_url}" alt="${game.game_name}">
+                                    <h2 class="nomargin">${game.game_name}</h2>
+                                </div>
+                                ${game.playtime_rank && game.playtime_rank < 6
+                                    ? `<div class="info-item right-content">
+                                        <strong style="font-size: 20px">🏆 Ranked <span class="ranked-number">${game.playtime_rank}</span> in playtime 🏆</strong>
+                                       </div>`
+                                    : ''}
+                            </div>
+
+                            <hr style="border: .5px solid lightgray; margin: 10px 0 10px">
+
                             <div class="game-info">
-                                <img src="${game.cover_url}" alt="${game.game_name} Cover" class="game-cover">
+                                <div>
+                                    <img src="${game.cover_url}" alt="${game.game_name} Cover" class="game-cover">
+                                    <div class="button-container">
+                                        <button class="menu-trigger-button button" id="game-cover-button">Game Options</button>
+                                        <div class="context-menu context-right context-left" id="game-cover-context-menu">
+                                            <button class="context-menu-item" onclick="redirectToInfo('${game.cover_url}')">See Info</button>
+                                            <button class="context-menu-item" onclick="redirectToStopwatch('${game.cover_url}')">Log Session Now</button>
+                                            <button class="context-menu-item" onclick="redirectToManual('${game.cover_url}')">Log Previous Session</button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="info-details">
                                     <div class="info-item"><strong>Game Name:</strong> ${game.game_name}</div>
                                     <div class="info-item"><strong>Developer:</strong> ${game.developer}</div>
@@ -46,21 +95,45 @@
                                     <div class="info-item"><strong>Platforms:</strong> ${game.platforms}</div>
                                     <div class="info-item"><strong>Price Paid:</strong> ${game.total_price_paid}</div>
                                     <div class="info-item"><strong>Value Played:</strong> ${game.total_value_played}</div>
-                                    <div class="info-item"><strong>Last Played:</strong> ${game.last_played} (${game.last_played_date})</div>
+                                    <div class="info-item"><strong>Last Played:</strong> ${game.last_played_formatted} (${game.last_played_date})</div>
                                     <div class="info-item"><strong>Average Session Length:</strong> ${game.average_session_length}</div>
+                                    <div class="info-item"><strong>Last Session Length:</strong> ${game.session_length}</div>
                                     <div class="info-item"><strong>Session Count:</strong> ${game.session_count}</div>
                                 </div>
                             </div>
                         </div>
                     `;
+                    startup_rankedNumberClassSetup()
                 } else {
                     container.innerHTML = `<div class="error-message">${data.message}</div>`;
                 }
+
+                // Context menu toggle
+                document.querySelectorAll('.menu-trigger-button').forEach(button => {
+                    const menu = button.nextElementSibling;
+
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation(); // Prevent clicks from propagating
+                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    document.addEventListener('click', (event) => {
+                        if (!button.contains(event.target) && !menu.contains(event.target)) {
+                            menu.style.display = 'none';
+                        }
+                    });
+                });
             })
             .catch(error => {
                 document.getElementById('game-info-container').innerHTML =
                     `<div class="error-message">An error occurred: ${error.message}</div>`;
             });
     });
+</script>
+
+<!-- Definition needed to handle suggestions while the user types in the game name -->
+<script>
+    const isCheckInfo = true
+    const gamesWithIcons = {{ games_with_icons | tojson }};
 </script>
 {% endblock %}

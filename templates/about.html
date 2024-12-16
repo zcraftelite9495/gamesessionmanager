@@ -1,0 +1,24 @@
+<!-- templates/about.html -->
+{% extends 'base.html' %}
+
+{% block title %}Changelog - Game Session Manager{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="container-header">
+        <img src="{{ url_for('assets', filename='gameControllerIcon-Pink.png') }}" width="100" height="100">
+        <div>
+            <h1 class="nomargin">About This Program</h1>
+            <h2 class="nomargin">Z's Game Session Manager</h2>
+        </div>
+    </div>
+
+    <hr style="border: 1px solid black; margin: 30px 0 30px">
+
+    <h2 id="section1" style="color: #d81b60;">Backstory</h2>
+    <p>Back in <strong>May of 2024</strong>, I created a <strong>Google Sheet</strong> to show my friends how good I was at organizing data. What did I do with this sheet, you ask? I used it to track the data of <strong>every single game</strong> I play on <strong>every single platform</strong>. And I did it all <strong><u>manually</u></strong>. It was [more than] a little bit time consuming and involved me taking a lot of screenshots on my phone when I started and stopped playing a game. So, back in <strong>September of 2024</strong>, I started working on a Terminal app I could use to put in the data more easily. And that was <u>v1.0.0</u>. Eventually, I got bored in life for quite a bit so I decided to expand on it, and eventually, it became what it is today, <strong>version {{ gsmversion }}</strong> out for everyone to see. I published the code on <strong>GitHub</strong> to show off my code, and I actually <strong>use this project daily</strong> instead of manually logging everything, and it makes it so much more easier.</p>
+
+    <h2 id="scetion2" style="color: #d81b60;">What is this for?</h2>
+    <p>This program integrates with a <strong>Google Sheet</strong> I designed in order to track, display, and summarize the playtime stats for <u>all my games</u> and for <u>all the platforms</u> I play on. I published the code because people on GitHub might find my project interesting [I hope] and I might be able to use it on my resume if my Science career ever falls through and I become a full time programmer.</p>
+</div>
+{% endblock %}

@@ -18,7 +18,13 @@
     <form action="/submit_stopwatch" method="POST">
         <div>
             <label for="game_name">Game Name:</label>
-            <input type="text" id="game_name" name="game_name" placeholder="ex. Minecraft" required>
+            <div style="position: relative;">
+                <div class="horizontal-div">
+                    <input type="text" name="game_name" id="game_name" placeholder="ex. Minecraft" style="width: auto; flex: 1; margin-right: 10px" required>
+                    <button class="button" type="button" id="see_info_button" style="height: 37px">See Info</button>
+                </div>
+                <div id="suggestions" class="suggestions" style="display: none;"></div>
+            </div>
         </div>
         <div>
             <label for="game_platform">Game Platform:</label>
@@ -95,5 +101,36 @@
             String(minutes).padStart(2, '0') + ':' + 
             String(seconds).padStart(2, '0');
     }
+</script>
+
+<script>
+    // Function to get URL query parameters
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Pre-fill the game_name field if the query parameter is present
+    document.addEventListener('DOMContentLoaded', function () {
+        const gameNameParam = getQueryParam('game_name');
+        if (gameNameParam) {
+            document.getElementById('game_name').value = decodeURIComponent(gameNameParam);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () { // Waits for initial loading to finish
+        // Add event listener to the See Info button
+        const seeInfoButton = document.getElementById('see_info_button');
+        seeInfoButton.addEventListener('click', () => {
+            getGameNameAndRedirectToInfo();
+        });
+    });
+</script>
+
+<!-- Definition needed to handle suggestions while the user types in the game name -->
+<script>
+    const gamesWithIcons = {{ games_with_icons | tojson }};
 </script>
 {% endblock %}
