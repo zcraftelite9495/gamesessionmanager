@@ -4,18 +4,387 @@
 {% block title %}Home - Game Session Manager{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1 class="doubleheading1">Z's Game Session Manager</h1>
-        <h2 class="nomargin">Web Interface {{ version }}</h2>
-        <h5 class="doubleheading2" style="color: gray">Powered by Google Sheets API</h5>
-        <nav>
-            <a class="button" href="/add_entry">Add Log Entry</a>
-            <a class="button" href="/check_game_info">Check Game Info</a>
-            <a class="button" href="/list_games">See All Games</a>
-        </nav>
-        </br>
-        <nav>
-            <a class="view_sheet_button" href="https://docs.google.com/spreadsheets/d/1cYQ8B-lnzHLaO32mFZJTweRy8vqjr0Wm2kmcHEcFP8A/edit?gid=329820141#gid=329820141">View Google Sheet</a>
-        </nav>
+{% if clientType == "App Interface" %}
+    <div id="intro-overlay" style="display: none;">
+        <img src="{{ url_for('assets', filename='gameControllerIcon-White.png') }}" id="intro-logo" type="image/png">
+        <div id="intro-text">Z's Game Session Manager</div>
     </div>
+{% endif %}
+
+<!-- Homepage Title & Feature Showcase -->
+<div class="container">
+
+    <div id="home-container">
+        <img src="{{ url_for('assets', filename='gameControllerIcon-Pink.png') }}" id="homepage-logo" type="image/png">
+        <div>
+            <h1 class="nobottommargin">Z's Game Session Manager</h1>
+            <h2 class="nomargin">{{ clientType }} {{ version }}</h2>
+            <h5 class="notopmargin" style="color: gray">Powered by Google Sheets API</h5>
+        </div>
+    </div>
+
+    <hr style="border: 1px solid black">
+
+    <div id="homepage-feature-showcase">
+        <div class="homepage-button-container">
+            <h2 class="homepage-label" style="color: #d81b60;">Log a Session</h2>
+            <a class="homepage-button" href="/add_entry">Manual Mode</a>
+            <a class="homepage-button" href="/stopwatch">Stopwatch Mode (BETA)</a>
+        </div>
+        <div class="homepage-button-container">
+            <h2 class="homepage-label" style="color: #d81b60;">See Game Info</h2>
+            <a class="homepage-button" href="/check_game_info">Specific Game</a>
+            <a class="homepage-button" href="/list_games">All Games</a>
+        </div>
+        <div class="homepage-button-container">
+            <h2 class="homepage-label" style="color: #579539;">Make your own sheet!</h2>
+            <a class="view_sheet_button" href="https://docs.google.com/spreadsheets/d/1cYQ8B-lnzHLaO32mFZJTweRy8vqjr0Wm2kmcHEcFP8A/edit?gid=329820141#gid=329820141">View Google Sheet</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Last Played Games Information -->
+<div class="container">
+
+    <div id="last-played-container">
+        <img src="{{ url_for('assets', filename='gameControllerHistoryIcon.png') }}" id="homepage-logo" type="image/png">
+        <div>
+            <h1 class="nobottommargin">Last Played</h1>
+            {% if game.last_played == "Playing Now" %}
+                <h2 class="notopmargin">Playing Now<h2>
+            {% else %}
+                <h2 class="notopmargin">Played for {{ game.session_length }} about {{ game.last_played_formatted }}</h2>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr style="border: 1px solid black; margin-bottom: 30px">
+
+    <div class="game-info" id="last-played-info">
+        <div>
+            <img src="{{ game.cover_url }}" alt="{{ game.game_name }} Cover" class="game-cover">
+            <div class="button-container">
+                <button class="menu-trigger-button button" id="game-cover-button">Game Options</button>
+                <div class="context-menu context-right context-left" id="game-cover-context-menu">
+                    <button class="context-menu-item" onclick="redirectToInfo('{{ game.game_name | urlencode }}')">See Info</button>
+                    <button class="context-menu-item" onclick="redirectToStopwatch('{{ game.game_name | urlencode }}')">Log Session Now</button>
+                    <button class="context-menu-item" onclick="redirectToManual('{{ game.game_name | urlencode }}')">Log Previous Session</button>
+                </div>
+            </div>
+        </div>
+        <div class="info-details">
+            <div class="info-item">
+                <strong>Game Name:</strong>
+                <span>{{ game.game_name }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Developer:</strong>
+                <span>{{ game.developer }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Total Playtime:</strong>
+                <span>{{ game.total_playtime }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Platforms:</strong>
+                <span>{{ game.platforms }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Price Paid:</strong>
+                <span>{{ game.total_price_paid }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Value Played:</strong>
+                <span>{{ game.total_value_played }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Last Played:</strong>
+                <span>{{ game.last_played_formatted }} ({{ game.last_played_date }})</span>
+            </div>
+            <div class="info-item">
+                <strong>Average Session Length:</strong>
+                <span>{{ game.average_session_length }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Last Session Length:</strong>
+                <span>{{ game.session_length }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Session Count:</strong>
+                <span>{{ game.session_count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border: 0.1px solid black; margin-bottom: 30px; margin-top: 30px">
+
+    <div id="lastplayed1" class="lastplayed-item" style="display: flex; align-items: center; gap: 10px;">
+        <!-- Icon -->
+        <img style="height: 24px; width: 24px; margin-right: 5px" src="{{ game.icon_url }}">
+
+        <!-- Text (Number and Game Name) -->
+        <h2 class="nomargin" style="display: flex; align-items: center; gap: 5px; margin: 0;">
+            <span style="color: black;">1.&nbsp;</span>
+            <span style="color: #d81b60;">{{ game.game_name }}</span>
+        </h2>
+
+        <!-- Additional Info (Last Played, Menu) -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+            <h2 class="nomargin" style="margin: 0;">
+                <span style="margin-right: 5px;">{{ game.last_played_formatted }}</span>
+            </h2>
+            <div class="menu-container">
+                <button class="menu-button">&#x22EE;</button>
+                <div class="context-menu context-right">
+                    <button class="context-menu-item" onclick="redirectToInfo('{{ game.game_name | urlencode }}')">See Info</button>
+                    <button class="context-menu-item" onclick="redirectToStopwatch('{{ game.game_name | urlencode }}')">Log Session Now</button>
+                    <button class="context-menu-item" onclick="redirectToManual('{{ game.game_name | urlencode }}')">Log Previous Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lastplayed2" class="lastplayed-item" style="display: flex; align-items: center; gap: 10px;">
+        <!-- Icon -->
+        <img style="height: 24px; width: 24px; margin-right: 5px" src="{{ more_games.lastplayed2.icon_url }}">
+
+        <!-- Text (Number and Game Name) -->
+        <h2 class="nomargin" style="display: flex; align-items: center; gap: 5px; margin: 0;">
+            <span style="color: black;">2.&nbsp;</span>
+            <span style="color: #d81b60;">{{ more_games.lastplayed2.game_name }}</span>
+        </h2>
+
+        <!-- Additional Info (Last Played, Menu) -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+            <h2 class="nomargin" style="margin: 0;">
+                <span style="margin-right: 5px;">{{ more_games.lastplayed2.last_played_formatted }}</span>
+            </h2>
+            <div class="menu-container">
+                <button class="menu-button">&#x22EE;</button>
+                <div class="context-menu context-right">
+                    <button class="context-menu-item" onclick="redirectToInfo('{{ more_games.lastplayed2.game_name | urlencode }}')">See Info</button>
+                    <button class="context-menu-item" onclick="redirectToStopwatch('{{ more_games.lastplayed2.game_name | urlencode }}')">Log Session Now</button>
+                    <button class="context-menu-item" onclick="redirectToManual('{{ more_games.lastplayed2.game_name | urlencode }}')">Log Previous Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lastplayed3" class="lastplayed-item" style="display: flex; align-items: center; gap: 10px;">
+        <!-- Icon -->
+        <img style="height: 24px; width: 24px; margin-right: 5px" src="{{ more_games.lastplayed3.icon_url }}">
+
+        <!-- Text (Number and Game Name) -->
+        <h2 class="nomargin" style="display: flex; align-items: center; gap: 5px; margin: 0;">
+            <span style="color: black;">3.&nbsp;</span>
+            <span style="color: #d81b60;">{{ more_games.lastplayed3.game_name }}</span>
+        </h2>
+
+        <!-- Additional Info (Last Played, Menu) -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+            <h2 class="nomargin" style="margin: 0;">
+                <span style="margin-right: 5px;">{{ more_games.lastplayed3.last_played_formatted }}</span>
+            </h2>
+            <div class="menu-container">
+                <button class="menu-button">&#x22EE;</button>
+                <div class="context-menu context-right">
+                    <button class="context-menu-item" onclick="redirectToInfo('{{ more_games.lastplayed3.game_name | urlencode }}')">See Info</button>
+                    <button class="context-menu-item" onclick="redirectToStopwatch('{{ more_games.lastplayed3.game_name | urlencode }}')">Log Session Now</button>
+                    <button class="context-menu-item" onclick="redirectToManual('{{ more_games.lastplayed3.game_name | urlencode }}')">Log Previous Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lastplayed4" class="lastplayed-item" style="display: flex; align-items: center; gap: 10px;">
+        <!-- Icon -->
+        <img style="height: 24px; width: 24px; margin-right: 5px" src="{{ more_games.lastplayed4.icon_url }}">
+
+        <!-- Text (Number and Game Name) -->
+        <h2 class="nomargin" style="display: flex; align-items: center; gap: 5px; margin: 0;">
+            <span style="color: black;">4.&nbsp;</span>
+            <span style="color: #d81b60;">{{ more_games.lastplayed4.game_name }}</span>
+        </h2>
+
+        <!-- Additional Info (Last Played, Menu) -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+            <h2 class="nomargin" style="margin: 0;">
+                <span style="margin-right: 5px;">{{ more_games.lastplayed4.last_played_formatted }}</span>
+            </h2>
+            <div class="menu-container">
+                <button class="menu-button">&#x22EE;</button>
+                <div class="context-menu context-right">
+                    <button class="context-menu-item" onclick="redirectToInfo('{{ more_games.lastplayed4.game_name | urlencode }}')">See Info</button>
+                    <button class="context-menu-item" onclick="redirectToStopwatch('{{ more_games.lastplayed4.game_name | urlencode }}')">Log Session Now</button>
+                    <button class="context-menu-item" onclick="redirectToManual('{{ more_games.lastplayed4.game_name | urlencode }}')">Log Previous Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lastplayed5" class="lastplayed-item" style="display: flex; align-items: center; gap: 10px;">
+        <!-- Icon -->
+        <img style="height: 24px; width: 24px; margin-right: 5px" src="{{ more_games.lastplayed5.icon_url }}">
+
+        <!-- Text (Number and Game Name) -->
+        <h2 class="nomargin" style="display: flex; align-items: center; gap: 5px; margin: 0;">
+            <span style="color: black;">5.&nbsp;</span>
+            <span style="color: #d81b60;">{{ more_games.lastplayed5.game_name }}</span>
+        </h2>
+
+        <!-- Additional Info (Last Played, Menu) -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+            <h2 class="nomargin" style="margin: 0;">
+                <span style="margin-right: 5px;">{{ more_games.lastplayed5.last_played_formatted }}</span>
+            </h2>
+            <div class="menu-container">
+                <button class="menu-button">&#x22EE;</button>
+                <div class="context-menu context-right">
+                    <button class="context-menu-item" onclick="redirectToInfo('{{ more_games.lastplayed5.game_name | urlencode }}')">See Info</button>
+                    <button class="context-menu-item" onclick="redirectToStopwatch('{{ more_games.lastplayed5.game_name | urlencode }}')">Log Session Now</button>
+                    <button class="context-menu-item" onclick="redirectToManual('{{ more_games.lastplayed5.game_name | urlencode }}')">Log Previous Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- The G.A.Y. (Gaming Activity Yields) Chart -->
+<div class="container">
+
+    <div id="last-played-container">
+        <img src="{{ url_for('assets', filename='gameControllerClockIcon.png') }}" id="homepage-logo" type="image/png">
+        <div>
+            <h1 class="nobottommargin">
+                Your <span class="tooltip" data-tooltip="Gaming Activity Yields">G.A.Y.</span> Chart
+            </h1>
+            <h2 class="notopmargin">Played for a total of {{ total_hours_played }} Hours</h2>
+        </div>
+    </div>
+
+    <hr style="border: 1px solid black; margin-bottom: 30px">
+
+    <canvas id="hoursChart" width="400" height="500"></canvas>
+    <script>
+        const chart_games = {{ chart_games|tojson }};
+        const chart_hours = {{ chart_hours|tojson }};
+        
+        function getRainbowColor(index, total) {
+            const hue = (360 / total) * index;
+            return `hsl(${hue}, 100%, 50%)`;
+        }
+
+        const backgroundColors = chart_games.map((_, index) => getRainbowColor(index, chart_games.length));
+
+        const ctx = document.getElementById('hoursChart').getContext('2d');
+
+        const hoursChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chart_games,
+                datasets: [{
+                    label: 'Hours Played',
+                    data: chart_hours,
+                    backgroundColor: backgroundColors,
+                    borderColor: 'black',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        type: 'logarithmic',  // Logarithmic scale for x-axis
+                        beginAtZero: true,
+                        ticks: {
+                            display: false  // Hide x-axis ticks (labels)
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            display: false  // Hide y-axis ticks (labels)
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const gameName = tooltipItem.label;
+                                const hoursPlayed = tooltipItem.raw;
+                                return `${gameName}: ${hoursPlayed} hours`;
+                            }
+                        }
+                    },
+                    legend: {
+                        display: false  // Hide the legend entirely
+                    }
+                }
+            }
+        });
+    </script>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const overlay = document.getElementById("intro-overlay");
+
+        // Check sessionStorage for the 'first_time_home' flag
+        if (!sessionStorage.getItem('first_time_home')) {
+            // Set the flag for the current session
+            sessionStorage.setItem('first_time_home', 'false');
+
+            // Show the intro overlay
+            overlay.style.display = 'flex';
+
+            // Wait for 2 seconds, then fade out
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+
+                // After fade-out animation, remove the overlay
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 5000); // Match this duration with the fade-out transition
+            }, 5000);
+        }
+    });
+</script>
+
+<script>
+    document.querySelectorAll('.menu-button').forEach(button => {
+        const menu = button.nextElementSibling;
+
+        button.addEventListener('click', () => {
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!button.contains(event.target) && !menu.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+<script>
+    document.querySelectorAll('.menu-trigger-button').forEach(button => {
+        const menu = button.nextElementSibling;
+
+        button.addEventListener('click', () => {
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!button.contains(event.target) && !menu.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    });
+</script>
 {% endblock %}

@@ -1,0 +1,136 @@
+<!-- templates/stopwatch.html -->
+{% extends "base.html" %}
+
+{% block title %}Game Session Manager - Stopwatch Mode (BETA){% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="container-header">
+        <img src="{{ url_for('assets', filename='stopwatchModeIcon.png') }}" width="100" height="100">
+        <div>
+            <h1 class="nomargin">Add Log Entry</h1>
+            <h2 class="nomargin">Stopwatch Mode (BETA)</h2>
+        </div>
+    </div>
+
+    <hr style="border: 1px solid black; margin: 30px 0 30px">
+
+    <form action="/submit_stopwatch" method="POST">
+        <div>
+            <label for="game_name">Game Name:</label>
+            <div style="position: relative;">
+                <div class="horizontal-div">
+                    <input type="text" name="game_name" id="game_name" placeholder="ex. Minecraft" style="width: auto; flex: 1; margin-right: 10px" required>
+                    <button class="button" type="button" id="see_info_button" style="height: 37px">See Info</button>
+                </div>
+                <div id="suggestions" class="suggestions" style="display: none;"></div>
+            </div>
+        </div>
+        <div>
+            <label for="game_platform">Game Platform:</label>
+            <input type="text" id="game_platform" name="game_platform" placeholder="ex. Steam (PC)" required>
+        </div>
+        <div>
+            <label for="start_time">Start Time:</label>
+            <input type="text" id="start_time" name="start_time" class="readonly" placeholder="Automatic" readonly required>
+        </div>
+        <div>
+            <label for="end_time">End Time:</label>
+            <input type="text" id="end_time" name="end_time" class="readonly" placeholder="Automatic" readonly required>
+        </div>
+        <div class="stopwatch">
+            <div id="stopwatch_display" class="stopwatch_text">00:00:00</div>
+            <div class="stopwatch_button_group">
+                <button class="stopwatch_button start" type="button" id="start_button">Start</button>
+                <button class="stopwatch_button stop" type="button" id="stop_button" disabled>Stop</button>
+                <button class="stopwatch_button cancel" type="button" id="reset_button" disabled>Reset</button>
+            </div>
+        </div>
+        <button class="submit-button" type="submit" id="submit_button" disabled>Submit</button>
+    </form>
+</div>
+
+<script src="{{ url_for('script', filename='stopwatchMode.js') }}"></script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let startTime;
+    let interval;
+
+    document.getElementById('start_button').onclick = function() {
+        startTime = Date.now();
+        interval = setInterval(updateStopwatch, 1000);
+        document.getElementById('start_time').value = new Date(startTime).toLocaleTimeString();
+        document.getElementById('start_button').disabled = true;
+        document.getElementById('stop_button').disabled = false;
+        document.getElementById('reset_button').disabled = false;
+        document.getElementById('submit_button').disabled = false;
+    };
+
+    document.getElementById('stop_button').onclick = function() {
+        clearInterval(interval);
+        const endTime = Date.now();
+        document.getElementById('end_time').value = new Date(endTime).toLocaleTimeString();
+        document.getElementById('stop_button').disabled = true;
+        document.getElementById('start_button').disabled = false;
+
+        // Automatically submit the form
+        document.querySelector('form').submit();
+    };
+
+    document.getElementById('reset_button').onclick = function() {
+        // Reset the stopwatch and input fields
+        clearInterval(interval);
+        document.getElementById('stopwatch_display').innerText = '00:00:00';
+        document.getElementById('start_time').value = '';
+        document.getElementById('end_time').value = '';
+        document.getElementById('start_button').disabled = false;
+        document.getElementById('stop_button').disabled = true;
+        document.getElementById('reset_button').disabled = true;
+        document.getElementById('submit_button').disabled = true;
+    };
+
+    function updateStopwatch() {
+        const elapsedTime = Date.now() - startTime;
+        const seconds = Math.floor((elapsedTime / 1000) % 60);
+        const minutes = Math.floor((elapsedTime / 60000) % 60);
+        const hours = Math.floor((elapsedTime / 3600000) % 24);
+        document.getElementById('stopwatch_display').innerText = 
+            String(hours).padStart(2, '0') + ':' + 
+            String(minutes).padStart(2, '0') + ':' + 
+            String(seconds).padStart(2, '0');
+    }
+</script>
+
+<script>
+    // Function to get URL query parameters
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Pre-fill the game_name field if the query parameter is present
+    document.addEventListener('DOMContentLoaded', function () {
+        const gameNameParam = getQueryParam('game_name');
+        if (gameNameParam) {
+            document.getElementById('game_name').value = decodeURIComponent(gameNameParam);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () { // Waits for initial loading to finish
+        // Add event listener to the See Info button
+        const seeInfoButton = document.getElementById('see_info_button');
+        seeInfoButton.addEventListener('click', () => {
+            getGameNameAndRedirectToInfo();
+        });
+    });
+</script>
+
+<!-- Definition needed to handle suggestions while the user types in the game name -->
+<script>
+    const gamesWithIcons = {{ games_with_icons | tojson }};
+</script>
+{% endblock %}

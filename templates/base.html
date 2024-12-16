@@ -5,17 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Game Session Manager{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('assets', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
+<!-- JAVASCRIPT BEFORE LOAD SCRIPTS -->
+<script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block prescripts %}
+<!-- Page-specific scripts will go here -->
+{% endblock %}
 <body>
     <div class="titlebar">
-        <h1 class="site-title">Z's Game Session Manager</h1>
+        <a href="/" class="site-header-link">
+            <div class="site-header">
+                <img src="{{ url_for('assets', filename='gameControllerIcon-White.png') }}" alt="Game Controller Icon" class="site-icon">
+                <h1 class="site-title">Z's Game Session Manager</h1>
+            </div>
+        </a>
         <nav class="navigation">
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/add_entry">Add Log Entry</a></li>
+                <li>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-dropbtn">About</a>
+                        <div class="nav-dropdown-content">
+                            <a href="/about">About</a>
+                            <a href="/changelog">Changelog</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-dropbtn">Log Now</a>
+                        <div class="nav-dropdown-content">
+                            <a href="/stopwatch">Log with Stopwatch Mode (BETA)</a>
+                            <a href="/add_entry">Log Manually</a>
+                        </div>
+                    </div>
+                </li>
                 <li><a href="/check_game_info">Check Game Info</a></li>
-                <li><a href="/list_games">See All Games</a></li>
+                <li><a href="/list_games">List All Games</a></li>
             </ul>
         </nav>
     </div>
@@ -27,7 +58,19 @@
     <div class="endofcontent"></div>
 
     <footer class="footer">
-        <p>&copy; 2024 Zena Comerford/ZcraftElite</p>
+        <p>Z's Game Session Manager (v{{ version }}) <br>&copy; 2024 Zena Comerford/ZcraftElite</p>
+        {% if stage == 'alpha' %}
+            <p class="warning">Warning: You are using an Alpha/Pre-beta version of Game Session Manager.</br>Features are highly experimental and lots of bugs are expected.</p>
+        {% elif stage == 'beta' %}
+            <p class="warning">Warning: You are using a Beta version of this Game Session Manager.</br>Features are experimental and some bugs are expected.</p>
+        {% endif %}
     </footer>
 </body>
+<!-- JAVASCRIPT AFTER-LOAD SCRIPTS -->
+<script src="{{ url_for('script', filename='dropdown.js') }}"></script>
+<script src="{{ url_for('script', filename='requiredLabels.js') }}"></script>
+<script src="{{ url_for('script', filename='globalFunctions.js') }}"></script>
+{% block scripts %}
+<!-- Page-specific scripts will go here -->
+{% endblock %}
 </html>

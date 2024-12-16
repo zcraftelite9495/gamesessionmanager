@@ -1,0 +1,375 @@
+<!-- templates/changelog.html -->
+{% extends 'base.html' %}
+
+{% block title %}Changelog - Game Session Manager{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="container-header">
+        <img src="{{ url_for('assets', filename='gameControllerIcon-Pink.png') }}" width="100" height="100">
+        <div>
+            <h1 class="nomargin">Changelog</h1>
+            <h2 class="nomargin">Current Version: {{ version }}</h2>
+        </div>
+    </div>
+
+    <hr style="border: 1px solid black; margin: 30px 0 30px">
+
+    <h2 id="key" style="color: #d81b60;">🔑 Key</h2>
+    <p><strong>Entries</strong><br>
+        - 🐛 <strong>Bugfix</strong>: Fixes for bugs and errors.<br />
+        - ➕ <strong>Addition</strong>: New features or content.<br />
+        - 🔄 <strong>Change</strong>: Modifications or updates to existing features.<br />
+        - ⛔ <strong>Removal</strong>: Features or content that were removed.  
+    </p>
+    <p><strong>Release Stages</strong><br>
+        - <strong>Beta</strong>: Changes in beta releases.<br />
+        - <strong>Alpha</strong>: Changes in alpha releases.<br />
+        - <strong>Stable</strong>: Changes in stable releases.<br />
+        - <strong>Published</strong>: Release has been published on github.<br />
+        - <strong>Pending</strong>: Release is in development.<br />
+        - <strong>Unpublished/Doesn&rsquo;t Exist</strong>: Release doesn&rsquo;t exist or is unpublished.
+    </p>
+
+    <hr>
+
+    <h2 id="i-how-versions-work" style="color: #d81b60;">ℹ️ How Versions Work</h2>
+
+    <p>Versions with most of my projects follow the following format with numbers:</p>
+    <p><strong>0.0.0 (-beta) (-pre#)</strong></p>
+    <ul>
+        <li>The first number being the major version (incompatible API with older versions or giant update)</li>
+        <li>The second number being the feature release version (Compatible with older releases, just adds new features)</li>
+        <li>The third number being the patch release version (For after-development bugfixes and patches)</li>
+        <li>Then, if the version is currently under current development, it will have -beta</li>
+        <li>Then, if the version is currently under complex development with very unstable features, it will be a pre-beta, using <code>pre(Prerelease Number)</code></li>
+    </ul>
+
+    <hr />
+
+    <div class="changelog-entry">
+        <div class="horizontal-div-text">
+            <div class="left-content"><h3 id="changelog-200-stable">📜🟢 <span class="release-heading">2.0.0</span></h3></div>
+            <div class="right-content"><h3>
+                <span class="stable-heading">stable</span>
+                <span class="published-heading">published</span>
+            </h3></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span></div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><button class="show-button">Show/Hide Changes</button></div>
+
+        <ul class="changelog-list" style="display: none;">
+            <li>➕ Started using GitHub to host the project on my profile. (Initial Release)</li>
+        </ul>
+    </div>
+
+    <hr />
+
+    <div class="changelog-entry">
+        <div class="horizontal-div-text">
+            <div class="left-content"><h3 id="changelog-210-beta-1-beta">📜🔵 <span class="release-heading">2.1.0-beta-1</span></h3></div>
+            <div class="right-content"><h3>
+                <span class="beta-heading">beta</span>
+                <span class="published-heading">published</span>
+            </h3></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span></div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><button class="show-button">Show/Hide Changes</button></div>
+
+        <ul class="changelog-list" style="display: none;">
+            <li>🐛 Fixed bugs with the old configuration file system failing to function.</li>
+            <li>🔄 Changed configuration directory to the <code>config</code> folder within the folder that <code>GameSessionManager.py</code> file is stored.</li>
+            <li>➕ Introduced a new class of functions to better manage program configuration.</li>
+            <li>🐛 Fixed a bug where the popup launcher was unable to locate assets when the working directory was not the directory <code>GameSessionManager.py</code> was stored in.</li>
+            <li>➕ Added in a variable within <code>GameSessionManager.py</code> that can easily enable/disable the webserver restarting the program when a change is made to the <code>GameSessionManager.py</code> file.</li>
+            <li>🔄 Changed the default security key to <code>urmom</code> for the funny.</li>
+        </ul>
+    </div>
+
+    <hr />
+
+    <div class="changelog-entry">
+        <div class="horizontal-div-text">
+            <div class="left-content"><h3 id="changelog-210-beta-2-pre1-alpha">📜🔴 <span class="release-heading">2.1.0-beta-2-pre1</span></h3></div>
+            <div class="right-content"><h3>
+                <span class="alpha-heading">alpha</span>
+                <span class="published-heading">published</span>
+            </h3></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span></div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><button class="show-button">Show/Hide Changes</button></div>
+
+        <ul class="changelog-list" style="display: none;">
+            <li>➕ Started utilizing the GitHub releases feature for better version tracking.</li>
+            <li>➕ Started a plain changelog for me to personally keep better track of changes I make between versions.</li>
+            <li>🐛 Fixed a bug with my default value for the reloaderMode variable.</li>
+            <li>➕ Introduced Stopwatch Tracking (Beta).</li>
+            <li>➕ Added a warning to the footer (in the web version) when the user is running an Alpha or Beta version of the program.</li>
+            <li>➕ Added a warning to the titlebar (in the terminal version) when the user is running an Alpha or Beta version of the program.</li>
+            <li>➕ Added the program name and the current version under alongside the copyright information.
+                END OF VERSION
+            </li>
+        </ul>
+    </div>
+
+    <hr />
+
+    <div class="changelog-entry">
+        <div class="horizontal-div-text">
+            <div class="left-content"><h3 id="changelog-210-beta-2-pre2-alpha">📜🔴 <span class="release-heading">2.1.0-beta-2-pre2</span></h3></div>
+            <div class="right-content"><h3>
+                <span class="alpha-heading">alpha</span>
+                <span class="published-heading">published</span>
+            </h3></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span></div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><button class="show-button">Show/Hide Changes</button></div>
+
+        <ul class="changelog-list" style="display: none;">
+            <li>🔄 Changed the changelog to <code>.md</code> (Markdown) format for better readability.</li>
+            <li>🔄 Updated the ReadMe (<code>README.md</code>).</li>
+            <li>🔄 Changed the heading of the Stopwatch Mode page to <code>Log using Stopwatch Mode (BETA)</code>.</li>
+            <li>🔄 Changed the heading of the Add Entry page to <code>Log Manually</code>.</li>
+            <li>🔄 Changed the values of the submit buttons on the logging pages to make more sense.</li>
+            <li>🔄 Reformatted the Stopwatch Mode stopwatch to look more aesthetically better by adding formatted buttons and placing the start/stop buttons next to the stopwatch.</li>
+            <li>➕ Added a dropdown labeled <code>Log Now</code> to contain the links to stopwatch mode and the add entry page.</li>
+            <li>➕ Added a <code>cancel</code> button to the Stopwatch Mode that will submit without resetting the page.</li>
+            <li>🐛 Fixed heading design mistake on the Stopwatch Mode page.</li>
+            <li>➕ Added the site icon to the header and made the site title clickable (takes you to <code>/</code>).</li>
+            <li>🔄 Completely redesigned the homepage for a more modern, more put-together feel.
+                END OF VERSION
+            </li>
+        </ul>
+    </div>
+
+    <hr />
+
+    <div class="changelog-entry">
+        <div class="horizontal-div-text">
+            <div class="left-content"><h3 id="changelog-210-beta-2-beta">📜🔵 <span class="release-heading">2.1.0-beta-2</span></h3></div>
+            <div class="right-content"><h3>
+                <span class="beta-heading">beta</span>
+                <span class="published-heading">published</span>
+            </h3></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span></div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><button class="show-button">Show/Hide Changes</button></div>
+
+        <ul class="changelog-list" style="display: none;">
+            <li>🔄 Changed the style of disabled inputs (Primarily used in Stopwatch Mode) to be grayed out.</li>
+            <li>🔄 Changed each <code>label</code> for the <code>input</code>s to add a red <code>*</code> at the end of each label, ensuring that it appears before any <code>:</code>s.</li>
+            <li>🐛 Fixed the name for the Stopwatch Mode page in the titlebar.</li>
+            <li>➕ Implemented a function to show your last played game on the homepage under the main menu area (this was a lot harder than you would think).</li>
+            <li>➕ Added a new icon for the last played game section of the homepage.</li>
+            <li>🔄 Moved the scripts from <code>base.html</code> to individual .js files.</li>
+            <li>➕ Added placeholders to inputs to teach the user how to correctly input the values, instead of adding them to the labels.</li>
+            <li>🔄 Changed the custom date output to a date input, for aesthetic purposes.</li>
+            <li>➕ Added custom icons all around the web interface for aesthetic purposes.</li>
+            <li>🔄 Updated the README to include copyright acknowledgement for the icons used.</li>
+            <li>➕ Added the <code>LICENSE</code> and the cooler <code>LICENSE.md</code> to the repo for copyright.</li>
+            <li>➕ Added the <code>COPYINFO.md</code> file to contain copyright info about works used within the repo.</li>
+            <li>➕ Added emojis to most markdown files for some spark.</li>
+            <li>🔄 Redesigned the changelog to make it more beautiful.</li>
+            <li>⛔ Removed <code>game_info.html</code> and instead used a AJAX request instead to fetch the game&rsquo;s info.</li>
+        </ul>
+    </div>
+
+    <hr />
+
+    <div class="changelog-entry">
+        <div class="horizontal-div-text">
+            <div class="left-content">
+                <h3 id="changelog-210-stable">📜🟢 <span class="release-heading">2.1.0</span></h3>
+            </div>
+            <div class="right-content">
+                <h3>
+                    <span class="stable-heading">stable</span>
+                    <span class="pending-heading">pending</span>
+                </h3>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span>&nbsp;<span class="changes-heading"></span></div>
+
+        <div style="display: flex; justify-content: center; width: 100%"><button class="show-button">Show/Hide Changes</button></div>
+
+        <ul class="changelog-list" style="display: none;">
+            <li>➕ Added a new <code>--app</code> command argument to launch the webapp in an independent window.</li>
+            <li>🔄 Redid the logic for the launcher applet to be much easier to code and modify later.</li>
+            <li>➕ Added a <code>App (NEW)</code> button to the launcher applet to compensate for the addition of the app interface.</li>
+            <li>➕ Added in <code>pygame</code> in order to use its music support for fun.</li>
+            <li>➕ Added in the Windows XP tour music to the launcher applet.</li>
+            <li>➕ Added in a special easter egg to the launcher applet.</li>
+            <li>➕ Added in support for changing the windows AppID.</li>
+            <li>➕ Added in the functionality to set relevant OS Environment variables automatically.</li>
+            <li>🔄 Instead of constantly rewriting code, used the newer <code>/api/get_game_info</code> API to get the game information whenever the implementation was possible.</li>
+            <li>➕ Added a system tray icon to indicate when the app is running, and run various commands when needed.</li>
+            <li>🔄 Instead of constantly rewriting code, used the newer <code>/api/add_entry</code> API to log new sessions whenever the implementation was possible.</li>
+            <li>➕ Added an about menu that is located in the system tray applet when the app interface is running.</li>
+            <li>➕ Added more recently played entries to the recently played (they just aren’t expanded like the most recently played one is)</li>
+            <li>➕ Added a 3-dot menu to the recently played entries to allow you to quickly access information about those games.</li>
+            <li>➕ Added an <code>Game Options</code> button under game covers to allow you to quickly access information about those games.</li>
+            <li>➕ Added a system to easily fill in the details of the game you want to view information for or the game you want to log a session for.</li>
+            <li>➕ Added a <code>changelog</code> page to the site and added it to an <code>about</code> section in the titlebar</li>
+            <ul>
+                <li>➕ Set up the changelog to automatically format the emojis with a backround for emphasis.</li>
+                <li>➕ Set up javascript to create a button that allows you to show/hide the changelog text.</li>
+            </ul>
+            <li>➕ Added a <code>about</code> page to the site and added it to an <code>about</code> section in the titlebar</li>
+            <li>🐛 Fixed formatting error with the footer design.</li>
+            <li>➕ Added the version number of the program to the launcher applet.</li>
+            <li>⛔ Marked the terminal version as <code>deprecated</code> until it gets updated in a later patch.</li>
+            <li>🔄 Reordered buttons on the launcher applet to group app & web versions together, as it makes sense due to their similarities</li>
+            <li>➕ Added a function to the main program to save a list of possible games with their relative icons.</li>
+            <li>➕ Added a suggestions feature that will suggest game names as you type, making it easier to avoid typing special characters that may be present in some game names.</li>
+            <li>➕ Added a function to save the total hours played and embed it inside of the homepage.</li>
+            <li>➕ Added the G.A.Y. (Gaming Activity Yields) Chart which will calculate based on all of your game data to the homepage.</li>
+            <li>🔄 Changed the placeholders for icons/logos/covers that are not found to match the site's design.</li>
+            <li>🔄 Changed the site name branding to use a public font called `Chewy` that I liked.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function wrapIcons() {
+        // List of icons to wrap
+        const icons = ['🔄', '🐛', '➕', '⛔'];
+
+        // Create a TreeWalker to find all text nodes
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+
+        // Collect all text nodes containing any of the icons
+        const textNodes = [];
+        let node;
+        while ((node = walker.nextNode())) {
+            if (icons.some(icon => node.nodeValue.includes(icon))) {
+                textNodes.push(node);
+            }
+        }
+
+        // Process each text node to wrap icons in a span
+        textNodes.forEach((node) => {
+            const fragment = document.createDocumentFragment();
+            let remainingText = node.nodeValue;
+
+            // Replace each icon in the text
+            while (remainingText.length > 0) {
+                // Find the first icon in the text
+                const nextIcon = icons.find(icon => remainingText.includes(icon));
+                if (!nextIcon) {
+                    fragment.appendChild(document.createTextNode(remainingText));
+                    break;
+                }
+
+                // Split the text at the first occurrence of the icon
+                const index = remainingText.indexOf(nextIcon);
+                const beforeIcon = remainingText.slice(0, index);
+                const afterIcon = remainingText.slice(index + nextIcon.length);
+
+                // Add text before the icon
+                if (beforeIcon) {
+                    fragment.appendChild(document.createTextNode(beforeIcon));
+                }
+
+                // Wrap the icon in a span
+                const span = document.createElement('span');
+                span.className = 'changelog-icon';
+                span.textContent = nextIcon;
+                fragment.appendChild(span);
+
+                // Update the remaining text
+                remainingText = afterIcon;
+            }
+
+            // Replace the original text node with the new fragment
+            node.parentNode.replaceChild(fragment, node);
+        });
+    }
+
+    // Run the function
+    wrapIcons();
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Select all changelog entries
+        const changelogEntries = document.querySelectorAll('.changelog-entry');
+
+        // Iterate over each changelog entry
+        changelogEntries.forEach(entry => {
+            // Find the container for the changelog title (horizontal-div-text)
+            const container = entry.querySelector('.horizontal-div-text');
+            if (!container) {
+                return; // Skip if no container is found
+                console.log("error")
+            }
+
+            // Find the change headings within the current changelog entry
+            const changesHeadings = Array.from(entry.querySelectorAll('.changes-heading'));
+
+            // Get the changelog list by ID
+            const changelogList = entry.querySelector('.changelog-list');
+            if (!changelogList) return; // Skip if no changelog list is found
+
+            // Initialize counters for different change types
+            let additions = 0;
+            let bugfixes = 0;
+            let removals = 0;
+            let modifications = 0;
+
+            // Count the changes within the list
+            const changelogItems = changelogList.querySelectorAll('li');
+            changelogItems.forEach(item => {
+                const text = item.textContent;
+
+                if (text.includes('➕')) {
+                    additions++;
+                } else if (text.includes('🐛') || text.includes('🪱')) { // bug or worm emoji
+                    bugfixes++;
+                } else if (text.includes('❌') || text.includes('⛔')) {
+                    removals++;
+                } else if (text.includes('🔄')) {
+                    modifications++;
+                }
+            });
+
+            // Calculate the total changes
+            const totalChanges = additions + bugfixes + removals + modifications;
+
+            // Update the change headings with the counts
+            if (changesHeadings.length === 5) {
+                changesHeadings[0].textContent = `📜 Total Changes: ${totalChanges}`;
+                changesHeadings[1].textContent = `➕ Additions: ${additions}`;
+                changesHeadings[2].textContent = `🐛 Bugfixes: ${bugfixes}`;
+                changesHeadings[3].textContent = `❌ Removals: ${removals}`;
+                changesHeadings[4].textContent = `🔄 Modifications: ${modifications}`;
+            }
+
+            // Add event listener for the "Show/Hide Changes" button
+            const toggleButton = entry.querySelector('button.show-button');
+            if (toggleButton) {
+                toggleButton.addEventListener('click', () => {
+                    // Toggle the visibility of the changelog list
+                    if (changelogList.style.display === 'none' || changelogList.style.display === '') {
+                        changelogList.style.display = 'block';
+                    } else {
+                        changelogList.style.display = 'none';
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

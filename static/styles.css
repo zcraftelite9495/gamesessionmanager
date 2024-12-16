@@ -1,3 +1,14 @@
+/* ---------------------------------- Fonts -------------------------------- */
+/* Chewy */
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+.font-chewy-regular {
+    font-family: "Chewy", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+/* ---------------------------------- Main --------------------------------- */
 /* Global Styles */
 html, body {
     height: 100%; /* Ensure full height for html and body */
@@ -9,8 +20,60 @@ html, body {
     flex-direction: column; /* Flex items arranged in a column */
 }
 
+code {
+  background-color: #222;
+  color: #fff;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.horizontal-div {
+    display: flex;
+    flex-direction: row;
+}
+
+.horizontal-div-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; /* Aligns items vertically */
+    white-space: nowrap;
+    overflow: auto;
+}
+
+.left-content {
+    flex: 1; /* Allows flexible space for left content */
+    display: flex;
+    align-items: center; /* Aligns icon and text vertically */
+    justify-content: flex-start; /* Aligns content to the left */
+}
+
+.center-content {
+    flex: 1; /* Allows flexible space for center content */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers content horizontally */
+    text-align: center; /* Optional for text alignment */
+}
+
+.right-content {
+    flex: 1; /* Allows flexible space for right content */
+    display: flex;
+    align-items: center; /* Aligns content vertically */
+    justify-content: flex-end; /* Aligns content to the right */
+    text-align: right; /* Ensures text aligns properly to the right */
+}
+
 .nomargin {
-    margin: 0;
+    margin: 0; /* Remove all margin */
+}
+
+.nobottommargin {
+    margin-bottom: 0; /* Remove bottom margin */
+}
+
+.notopmargin {
+    margin-top: 0; /* Remove top margin */
 }
 
 /* Footer */
@@ -27,30 +90,73 @@ html, body {
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
-/* Title Bar */
-.titlebar {
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Vertically center items */
-    justify-content: space-between; /* Space out elements */
-    background-color: #d81b60; /* Dark pink background */
-    color: white; /* White text color */
-    padding: 10px 20px; /* Padding around the title bar */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+.social-media-buttons {
+    text-align: center;
+    margin-top: 15px;
 }
 
-.titlebar .logo img {
-    height: 50px; /* Logo image height */
+.fa {
+  font-size: 50px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+  color: white;
+}
+
+.fa:hover {
+  opacity: 0.7;
+}
+
+/* Title Bar */
+.titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d81b60;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.site-header-link {
+    text-decoration: none;
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.site-icon {
+    width: 64px;
+    height: 64px;
+    margin-right: 15px;
 }
 
 .site-title {
-    color: #FFFFFF; /* Title text color */
-    margin: 0; /* Remove default margin */
-    font-size: 24px; /* Font size for site title */
+    color: #FFFFFF;
+    margin: 0;
+    font-size: 32px; 
+    font-family: "Chewy", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Navigation */
 .navigation {
     margin: 20px 0; /* Margin above and below */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center align items vertically */
+}
+
+.divider {
+    width: 1px; /* Width of the divider */
+    height: 30px; /* Height of the divider */
+    background-color: white; /* Color of the divider */
+    margin: 0 20px; /* Spacing around the divider */
 }
 
 .navigation ul {
@@ -74,7 +180,117 @@ html, body {
     color: #ffcc00; /* Change link color on hover */
 }
 
-/* Container */
+.nav-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-dropbtn {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    display: inline-flex; /* Use inline-flex for the button */
+    align-items: center; /* Align items vertically */
+}
+
+.nav-dropbtn:after {
+    content: '\2BC6'; /* Unicode down arrow character */
+    font-size: 0.8em; /* Adjust the font size as needed */
+    color: white; /* Arrow color */
+    margin-left: 0.5em; /* Add margin between text and arrow */
+}
+
+.nav-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #EE5A92;
+    z-index: 1;
+    width: max-content; /* Adjust as needed */
+    overflow-x: hidden;
+}
+
+.nav-dropdown:hover .nav-dropdown-content, .nav-dropdown-content.show {
+    display: block;
+}
+
+.nav-dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ED377B;
+}
+
+/* Menu Buttons */
+.menu-container {
+    position: relative;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.context-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: auto;
+    white-space: nowrap;
+}
+
+.context-right {
+    right: 0;
+}
+
+.context-left {
+    left: 0;
+}
+
+.context-menu-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.context-menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+.button-container {
+    position: relative;
+}
+
+.menu-trigger-button {
+    width: 100%;
+    margin-right: 20px;
+}
+
+#game-cover-button {
+    max-width: 187.5px;
+}
+
+#game-cover-context-menu {
+    max-width: 187.5px;
+}
+
+/* Containers */
 .container {
     max-width: 800px; /* Maximum width */
     min-width: calc(44.44vw); /* Minimum width set to 1/3 of the viewport */
@@ -83,6 +299,15 @@ html, body {
     background-color: #fff; /* White background */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
     border-radius: 10px; /* Rounded corners */
+}
+
+.container-header {
+    display: flex;
+    align-items: center;
+}
+
+.container-header img {
+    margin-right: 20px;
 }
 
 /* Headings */
@@ -94,18 +319,14 @@ h2 {
     color: #db8cc6; /* Subheading color */
 }
 
-.doubleheading1 {
-    margin-bottom: 0; /* Remove bottom margin */
-}
-
-.doubleheading2 {
-    margin-top: 0; /* Remove top margin */
-}
-
 /* Buttons */
+button:disabled, .disabled-button {
+    cursor: not-allowed;
+}
+
 .button, input[type="submit"], .submit-button {
+    /* Default Button */
     display: inline-block; /* Button styled as inline block */
-    background-color: #d81b60; /* Background color */
     color: white; /* Text color */
     padding: 10px; /* Padding inside button */
     border: none; /* No border */
@@ -115,24 +336,19 @@ h2 {
     text-decoration: none; /* Ensures the button does not get underlined */
 }
 
-.button:hover, input[type="submit"]:hover, .submit-button:hover {
+.button, input[type="submit"], .submit-button { 
+    /* Default Button Enabled */
+    background-color: #d81b60; /* Background color */
+}
+
+.button:hover:not(:disabled), input[type="submit"]:hover:not(:disabled), .submit-button:hover:not(:disabled) {
+    /* Default Button Hover */
     background-color: #c2185b; /* Darker pink on hover */
 }
 
-.view_sheet_button {
-    display: inline-block; /* Button styled as inline block */
-    background-color: #579539; /* Background color */
-    color: white; /* Text color */
-    padding: 10px; /* Padding inside button */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition */
-    text-decoration: none; /* Ensures the button does not get underlined */
-}
-
-.view_sheet_button:hover {
-    background-color: #2F7F2D;
+.button:disabled, input[type="submit"]:disabled, .submit-button:disabled, .disabled-button {
+    /* Default Button Disabled */
+    background-color: #DFA7BC; /* Background color */
 }
 
 /* Input Fields */
@@ -147,6 +363,146 @@ input[type="text"] {
     margin-bottom: 15px; /* Bottom margin for spacing */
     border: 1px solid #e91e63; /* Input border color */
     border-radius: 5px; /* Rounded corners */
+}
+
+input[type="text"].readonly {
+    background-color: #D5D5D5;
+}
+
+input[type="date"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px; /* Padding inside */
+    margin-bottom: 15px; /* Bottom margin for spacing */
+    border: 1px solid #e91e63; /* Input border color */
+    border-radius: 5px; /* Rounded corners */
+    background-color: white; /* White background */
+}
+
+input[type="date"].readonly {
+    background-color: #D5D5D5; /* Grey background for readonly */
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: default;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+}
+
+/* ----------------------------- Page Specific ----------------------------- */
+
+/* Home Page */
+#home-container {
+    display: flex;
+    align-items: center;
+}
+
+#homepage-logo {
+    height: 128px;
+    width: 128px;
+    margin-right: 25px;
+}
+
+#homepage-feature-showcase {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+    grid-template-rows: auto auto; /* Two rows */
+    gap: 20px; /* Space between grid items */
+    justify-content: center; /* Center the grid horizontally */
+    align-items: center; /* Center items vertically within their grid cells */
+}
+
+.homepage-button-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    align: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.homepage-button-container:last-child {
+    grid-column: span 2; /* Make it span both columns */
+    justify-self: center; /* Center it horizontally */
+}
+
+.homepage-button {
+    /* Homepage Button */
+    display: inline-block; /* Button styled as inline block */
+    color: white; /* Text color */
+    background-color: #d81b60; /* Background color */
+    padding: 10px; /* Padding inside button */
+    margin-top: 5px;
+    magin-bottom: 5px;
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    text-decoration: none; /* Ensures the button does not get underlined */
+    min-width: calc(100% - 110px); /* Takes up all space - the margin */
+}
+
+.homepage-button:hover {
+    /* Default Button Hover */
+    background-color: #c2185b; /* Darker pink on hover */
+}
+
+.homepage-label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.view_sheet_button {
+    display: inline-block; /* Button styled as inline block */
+    background-color: #579539; /* Background color */
+    color: white; /* Text color */
+    padding: 10px; /* Padding inside button */
+    margin-top: 5px;
+    magin-bottom: 5px;
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    text-decoration: none; /* Ensures the button does not get underlined */
+    min-width: calc(200% - 110px); /* Takes up all space - the margin */
+}
+
+.view_sheet_button:hover {
+    background-color: #2F7F2D;
+}
+
+#last-played-container {
+    display: flex;
+    align-items: center;
+}
+
+/* General container for each game entry */
+.lastplayed-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 /* Game Info Card */
@@ -179,9 +535,239 @@ input[type="text"] {
 }
 
 .info-item {
-    margin-bottom: 10px; /* Space between items */
+    margin-bottom: 8px; /* Space between items */
 }
 
 .info-item strong {
     color: #d81b60; /* Color for strong labels */
+}
+
+.game-info-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Stopwatch */
+.stopwatch_container {
+    dispaly: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopwatch {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    width: fit-content; /* Ensures the width is determined by the content (stopwatch text and buttons) */
+}
+
+.stopwatch_text {
+    font-size: 110px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.stopwatch_button_group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%; /* Ensures the button group fills the remaining space */
+    justify-content: space-between; /* Ensures buttons are spaced out */
+}
+
+.stopwatch_button {
+    display: inline-block;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    flex-grow: 1; /* Makes the buttons expand equally to fill the available space */
+}
+
+.stopwatch_button.start:enabled {
+    background-color: #30D158;
+}
+
+.stopwatch_button.start:disabled {
+    background-color: #AFFFC3;
+}
+
+.stopwatch_button.stop:enabled {
+    background-color: #FF3B30;
+}
+
+.stopwatch_button.stop:disabled {
+    background-color: #FFB3B3;
+}
+
+.stopwatch_button.cancel:enabled {
+    background-color: #007BFF;
+}
+
+.stopwatch_button.cancel:disabled {
+    background-color: #A3C9FF;
+}
+
+/* Intro Overlay Styles */
+#intro-overlay {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #d81b60; /* Pink color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Ensure it is above all other elements */
+    opacity: 1;
+    transition: opacity 2s ease; /* Smooth fade-out */
+}
+
+#intro-text {
+    color: white;
+    font-size: 2.5rem; /* Adjust font size as needed */
+    font-weight: bold;
+    text-align: center;
+}
+
+#intro-logo {
+    height: 200px;
+    width: 200px;
+    margin-right: 25px;
+}
+
+/* Styles for the changelog headers */
+.stable-heading {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+}
+
+.beta-heading {
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+    position: relative;
+}
+
+.alpha-heading {
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+}
+    
+.release-heading {
+    background-color: darkslategray;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+}
+
+.changes-heading {
+    background-color: darkslategray;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+}
+
+.published-heading {
+    background-color: #1bc704;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+}
+
+.pending-heading {
+    background-color: #c7c004;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+}
+
+.unpublished-heading {
+    background-color: #c70a04;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+}
+
+.changelog-icon {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding: 3px;
+    font-size: calc(100%);
+}
+
+.changelog-list li {
+    list-style-type: none;
+    margin: 0 0 5px 0;
+    line-height: 1.2em;
+}
+
+.show-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: calc(100% - 3px);
+    cursor: pointer;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Game Info Checker Suggestions */
+
+.suggestions {
+    position: absolute;
+    top: calc(100% - 10px);
+    left: 0;
+    border: 1px solid #e91e63;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 100%;
+    background-color: white;
+    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.suggestion-item:hover {
+    background-color: #f8bbd0;
+    color: #e91e63;
+}
+
+#game_name {
+    position: relative;
 }

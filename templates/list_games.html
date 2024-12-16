@@ -5,11 +5,42 @@
 
 {% block content %}
     <div class="container">
-        <h1>List of Games</h1>
+        <div class="container-header">
+            <img src="{{ url_for('assets', filename='infoIcon.svg') }}" width="64" height="64">
+            <h1>All Games Info</h1>
+        </div>
+
+        <hr style="border: 1px solid black; margin: 30px 0 30px">
+
         {% for game in games_info %}
+
         <div class="game-info-card">
+            <div class="horizontal-div-text">
+                <div class="left-content">
+                    <img style="height: 24px; width: 24px; margin-right: 10px" src="{{ game.icon_url }}">
+                    <h2 class="nomargin">{{ game.game_name }}</h2>
+                </div>
+                {% if game.playtime_rank < 6 %}
+                <div class="info-item right-content">
+                    <strong style="font-size: 20px">🏆 Ranked <span class="ranked-number">{{ game.playtime_rank }}</span> in playtime 🏆</strong>
+                </div>
+                {% endif %}
+            </div>
+
+            <hr style="border: .5px solid lightgray; margin: 10px 0 10px">
+
             <div class="game-info">
-                <img src="{{ game.cover_url }}" alt="{{ game.game_name }} Cover" class="game-cover">
+                <div>
+                    <img src="{{ game.cover_url }}" alt="{{ game.game_name }} Cover" class="game-cover">
+                    <div class="button-container">
+                        <button class="menu-trigger-button button" id="game-cover-button">Game Options</button>
+                        <div class="context-menu context-right context-left" id="game-cover-context-menu">
+                            <button class="context-menu-item" onclick="redirectToInfo('{{ game.game_name | urlencode }}')">See Info</button>
+                            <button class="context-menu-item" onclick="redirectToStopwatch('{{ game.game_name | urlencode }}')">Log Session Now</button>
+                            <button class="context-menu-item" onclick="redirectToManual('{{ game.game_name | urlencode }}')">Log Previous Session</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="info-details">
                     <div class="info-item">
                         <strong>Game Name:</strong>
@@ -37,11 +68,15 @@
                     </div>
                     <div class="info-item">
                         <strong>Last Played:</strong>
-                        <span>{{ game.last_played }}</span>
+                        <span>{{ game.last_played_formatted }} ({{ game.last_played_date }})</span>
                     </div>
                     <div class="info-item">
                         <strong>Average Session Length:</strong>
                         <span>{{ game.average_session_length }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Last Session Length:</strong>
+                        <span>{{ game.session_length }}</span>
                     </div>
                     <div class="info-item">
                         <strong>Session Count:</strong>
@@ -54,4 +89,22 @@
             <p>No games found.</p>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.querySelectorAll('.menu-trigger-button').forEach(button => {
+        const menu = button.nextElementSibling;
+
+        button.addEventListener('click', () => {
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!button.contains(event.target) && !menu.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    });
+</script>
 {% endblock %}
